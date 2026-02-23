@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Listed – Airbnb</title>
+  <link rel="stylesheet" href="/output.css">
+  <style>
+    /* Airbnb-style success animation */
+    @keyframes checkDraw {
+      0% { stroke-dashoffset: 48; }
+      100% { stroke-dashoffset: 0; }
+    }
+    @keyframes circleDraw {
+      0% { stroke-dashoffset: 166; }
+      100% { stroke-dashoffset: 0; }
+    }
+    @keyframes scaleIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      60% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(24px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes confettiFall {
+      0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    .success-icon { animation: scaleIn 0.5s ease-out forwards; }
+    .success-icon circle {
+      stroke-dasharray: 166;
+      stroke-dashoffset: 166;
+      animation: circleDraw 0.6s 0.3s ease-out forwards;
+    }
+    .success-icon path {
+      stroke-dasharray: 48;
+      stroke-dashoffset: 48;
+      animation: checkDraw 0.4s 0.8s ease-out forwards;
+    }
+    .fade-up-1 { opacity: 0; animation: fadeUp 0.5s 1s ease-out forwards; }
+    .fade-up-2 { opacity: 0; animation: fadeUp 0.5s 1.15s ease-out forwards; }
+    .fade-up-3 { opacity: 0; animation: fadeUp 0.5s 1.3s ease-out forwards; }
+    .fade-up-4 { opacity: 0; animation: fadeUp 0.5s 1.45s ease-out forwards; }
+    .fade-up-5 { opacity: 0; animation: fadeUp 0.5s 1.6s ease-out forwards; }
+
+    /* Confetti */
+    .confetti {
+      position: fixed; top: -10px; width: 10px; height: 10px;
+      border-radius: 2px; opacity: 0;
+      animation: confettiFall linear forwards;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+  <!-- Navbar -->
+  <%- include("../partials/nav-bar") %>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex items-center justify-center px-4 py-12">
+    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 max-w-lg w-full p-10 text-center relative overflow-hidden">
+
+      <!-- Decorative gradient top bar -->
+      <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#FF5A5F] via-[#FC642D] to-[#FF5A5F]"></div>
+
+      <!-- Animated Success Icon -->
+      <div class="flex justify-center mb-6">
+        <svg class="success-icon" width="80" height="80" viewBox="0 0 52 52" fill="none">
+          <circle cx="26" cy="26" r="25" stroke="#FF5A5F" stroke-width="2" fill="none"/>
+          <path d="M14.1 27.2l7.1 7.2 16.7-16.8" stroke="#FF5A5F" stroke-width="3" fill="none"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <!-- Heading -->
+      <h1 class="fade-up-1 text-2xl font-bold text-gray-900 mb-2">
+        Your property is now listed!
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="fade-up-2 text-gray-500 text-base mb-8 leading-relaxed">
+        Congratulations! Your home has been successfully added to Airbnb.<br>
+        Guests can now discover and book your property.
+      </p>
+
+      <!-- Info Cards -->
+      <div class="fade-up-3 flex gap-4 mb-8">
+        <div class="flex-1 bg-gray-50 rounded-xl p-4 border border-gray-100">
+          <div class="text-2xl mb-1">🏠</div>
+          <p class="text-xs text-gray-400 uppercase tracking-wide font-medium">Status</p>
+          <p class="text-sm font-semibold text-gray-800 mt-0.5">Active</p>
+        </div>
+        <div class="flex-1 bg-gray-50 rounded-xl p-4 border border-gray-100">
+          <div class="text-2xl mb-1">👀</div>
+          <p class="text-xs text-gray-400 uppercase tracking-wide font-medium">Visibility</p>
+          <p class="text-sm font-semibold text-gray-800 mt-0.5">Public</p>
+        </div>
+        <div class="flex-1 bg-gray-50 rounded-xl p-4 border border-gray-100">
+          <div class="text-2xl mb-1">⚡</div>
+          <p class="text-xs text-gray-400 uppercase tracking-wide font-medium">Booking</p>
+          <p class="text-sm font-semibold text-gray-800 mt-0.5">Instant</p>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="fade-up-4 flex flex-col sm:flex-row gap-3">
+        <a href="/host/listings"
+           class="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl
+                  border-2 border-gray-200 text-gray-700 font-medium
+                  hover:border-gray-300 hover:bg-gray-50 transition-all duration-200 active:scale-95">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/>
+          </svg>
+          Browse Listings
+        </a>
+        <a href="/host/add-home"
+           class="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl
+                  bg-gradient-to-r from-[#FF5A5F] to-[#FC642D] text-white font-medium
+                  shadow-lg shadow-red-200 hover:shadow-xl hover:shadow-red-300
+                  hover:from-[#e04848] hover:to-[#e55a28] transition-all duration-200 active:scale-95">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+          Add Another Property
+        </a>
+      </div>
+
+      <!-- Footer note -->
+      <p class="fade-up-5 text-xs text-gray-400 mt-6">
+        You can manage your listings anytime from your host dashboard.
+      </p>
+
+    </div>
+  </div>
+
+  <!-- Confetti Script -->
+  <script>
+    const colors = ['#FF5A5F', '#FC642D', '#00A699', '#FFB400', '#484848', '#767676'];
+    const container = document.body;
+    for (let i = 0; i < 40; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = Math.random() * 100 + '%';
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.width = (Math.random() * 8 + 6) + 'px';
+      confetti.style.height = (Math.random() * 8 + 6) + 'px';
+      confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      confetti.style.animationDelay = (Math.random() * 1.5) + 's';
+      confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      container.appendChild(confetti);
+    }
+    // Clean up confetti after animation
+    setTimeout(() => {
+      document.querySelectorAll('.confetti').forEach(el => el.remove());
+    }, 5000);
+  </script>
+
+</body>
+</html>

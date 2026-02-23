@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/output.css">
+    <title>Your Trips – Airbnb</title>
+
+    <style>
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up {
+            animation: fadeUp 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+    <!-- Navbar include -->
+    <%- include('../partials/nav-bar') %>
+
+    <!-- Page Header -->
+    <div class="max-w-5xl mx-auto w-full px-6 pt-10 pb-4">
+        <h1 class="text-3xl font-bold text-gray-900 animate-fade-up">Trips</h1>
+        <p class="text-gray-500 mt-1 animate-fade-up">
+            Your upcoming and past reservations
+        </p>
+    </div>
+
+    <!-- Empty State Only -->
+    <div class="flex-1 flex flex-col items-center justify-center px-6 py-20 animate-fade-up">
+
+        <!-- Illustration -->
+        <div class="w-48 h-48 mb-8 relative">
+            <div class="absolute inset-0 bg-gradient-to-br from-[#FF5A5F]/10 to-[#FC642D]/10 rounded-full"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <svg class="w-24 h-24 text-[#FF5A5F]/60" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" 
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+            </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">
+            No trips booked...yet!
+        </h2>
+
+        <p class="text-gray-500 text-center max-w-md mb-8 leading-relaxed">
+            Time to dust off your bags and start planning your next adventure.
+            Find the perfect place to stay on Airbnb.
+        </p>
+
+        <!-- CTA Button -->
+        <a href="/"
+           class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl
+                  bg-gradient-to-r from-[#FF5A5F] to-[#FC642D] text-white font-semibold
+                  shadow-lg shadow-red-200 hover:shadow-xl hover:shadow-red-300
+                  hover:from-[#e04848] hover:to-[#e55a28] transition-all duration-200 active:scale-95">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            Start searching
+        </a>
+
+    </div>
+
+    <!-- Footer -->
+    <%- include("../partials/footer") %>
+
+</body>
+
+</html>

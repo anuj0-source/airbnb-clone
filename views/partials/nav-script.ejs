@@ -1,0 +1,11 @@
+<script>
+    const navbar = document.getElementById("navbar");
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add("bg-[#FF5A5F]", "shadow-md");
+      } else {
+        navbar.classList.remove("shadow-md");
+      }
+    });
+  </script>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="output.css">
+    <title>Home</title>
+    <style>
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-up {
+            opacity: 0;
+            animation: fadeUp 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+
+<!-- 🔥 background fix -->
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+    <%- include('../partials/nav-bar') %>
+
+    <!-- ✅ CENTER CONTAINER -->
+    <div class="max-w-7xl mx-auto px-6 py-6">
+
+        <div class="homes grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+
+            <% if(homes && homes.length > 0){ %>
+                <% homes.forEach((home, index) => { %>
+
+                    <!-- 🔥 CARD -->
+                    <div class="fade-up bg-white rounded-2xl overflow-hidden 
+                                shadow-md hover:shadow-2xl 
+                                transition duration-300 transform hover:-translate-y-2 
+                                border border-gray-200 cursor-pointer group"
+                         style="animation-delay: <%= index * 0.08 %>s">
+
+                        <!-- Image -->
+                        <a href="/homes/<%= home.id %>">
+                            <div class="h-56 overflow-hidden relative">
+                                <img src="<%= home.image %>" 
+                                     class="w-full h-full object-cover transition duration-300 group-hover:scale-110"/>
+                                <!-- Save Button (top-right of image) -->
+                                <%- include("../partials/save-btn",{home:home}) %>
+                            </div>
+                        
+
+                        <!-- Content -->
+                        <div class="p-4">
+
+
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-gray-800 font-semibold text-md truncate">
+                                    <%= home.houseName %>
+                                </h3>
+                                <span class="text-sm flex items-center gap-1">⭐ 5.0</span>
+                            </div>
+
+                            <p class="text-gray-500 text-sm mt-1">
+                                <%= home.location %>
+                            </p>
+
+                            <p class="text-gray-400 text-sm mt-1 line-clamp-2">
+                                <%= home.description %>
+                            </p>
+
+                            <p class="mt-2 text-gray-900 font-semibold">
+                                ₹<%= home.price %> 
+                                <span class="text-gray-500 font-normal">/ night</span>
+                            </p>
+
+                        </a>
+
+                            <!-- ✅ Button -->
+                            <div class="mt-3">
+                                <a href="/homes/<%= home.id %>">
+                                    <button
+                                        class="w-full rounded-lg bg-[#FF5A5F] px-4 py-2 text-sm font-medium text-white shadow-md transition hover:bg-[#e04848] hover:shadow-lg active:scale-95">
+                                        Book Now
+                                    </button>
+                                </a>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                <% }) %>
+            <% } else { %>
+
+                <p class="text-slate-500 col-span-full text-center py-10">
+                    No homes available at the moment.
+                </p>
+
+            <% } %>
+
+        </div>
+
+    </div>
+
+    
+    <%- include("../partials/footer") %>
+
+
+    <%- include('../partials/wishlist-toast') %>
+
+    <%- include("../partials/save-script") %>
+
+    <%- include('../partials/nav-script') %>
+
+</body>
+</html>

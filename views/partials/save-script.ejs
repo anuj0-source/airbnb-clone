@@ -1,0 +1,50 @@
+<script>
+function saveToWishlist(btn) {
+    const id = btn.dataset.id;
+    let isFav = btn.dataset.fav === "true";
+
+    const svg = btn.querySelector('svg');
+
+    // 🎯 toggle state FIRST (source of truth)
+    isFav = !isFav;
+    btn.dataset.fav = isFav;
+
+    // 🔥 animation
+    btn.classList.add('scale-125');
+    setTimeout(() => btn.classList.remove('scale-125'), 200);
+
+    // 🚀 API call
+    fetch('/wishlists', {
+        method: isFav ? 'POST' : 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        // 🎨 UI update (based on isFav, NOT svg)
+        btn.classList.toggle('bg-red-100', isFav);
+        btn.classList.toggle('hover:bg-red-200', isFav);
+
+        btn.classList.toggle('bg-white/80', !isFav);
+        btn.classList.toggle('hover:scale-110', !isFav);
+        btn.classList.toggle('hover:bg-white', !isFav);
+
+        svg.classList.toggle('text-red-500', isFav);
+        svg.classList.toggle('text-gray-600', !isFav);
+
+        svg.setAttribute('fill', isFav ? 'currentColor' : 'none');
+
+        if (typeof showToast === 'function') {
+            showToast(data.message || (isFav ? 'Saved ❤️' : 'Removed 🗑️'));
+        }
+    })
+    .catch(() => {
+        if (typeof showToast === 'function') {
+            showToast('Something went wrong');
+        }
+    });
+
+    return false;
+}
+</script>
