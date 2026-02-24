@@ -33,7 +33,6 @@ exports.getEditHome = async (req, res) => {
 
     const home = await Home.fetch(id);
 
-    console.log(home);
     res.render("./host/edit-home", {
       home: home,
       edit: editing
@@ -48,6 +47,8 @@ exports.postEditHome = async (req, res) => {
   try {
     const { "house-name": houseName, size, location, price, image, description } = req.body;
     const id = req.params.id;
+    const reqHome=await Home.fetch(id);
+    const fav=reqHome.favourite;
 
     const home = new Home(houseName, size, location, price, image, description, fav);
 
