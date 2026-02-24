@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const rootpath = require("./utils/pathUtil");
 const methodOverride = require("method-override");
+const {mongoConnect}=require("./utils/database");
 
 const PORT = 3000;
 const { userRouter } = require("./routes/user.route");
@@ -31,6 +32,15 @@ app.use("/", userRouter);
 
 app.use(errorController.pageNotFound);
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+async function startServer() {
+    try {
+        await mongoConnect();
+        app.listen(PORT, () => {
+            console.log(`Server is running on http://localhost:${PORT}`);
+        });
+    } catch (err) {
+        return err;
+    }
+}
+
+startServer();

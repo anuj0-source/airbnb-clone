@@ -5,12 +5,12 @@ exports.addHomeGet = (req, res) => {
   res.render("./host/edit-home", { edit: false });
 };
 
-exports.addHomePost = (req, res) => {
-  let id = Math.random();
+exports.addHomePost = async (req, res) => {
   const { "house-name": houseName, size, location, price, image, description } = req.body;
   let favourite = false;
-  const home = new Home(id, houseName, size, location, price, image, description, favourite);
-  home.save(false);
+  const edit=false;
+  const home = new Home(houseName, size, location, price, image, description, favourite);
+  await home.save(edit);
   res.render("./host/add-home-response");
   console.log(home);
 };
@@ -49,13 +49,9 @@ exports.postEditHome = async (req, res) => {
     const { "house-name": houseName, size, location, price, image, description } = req.body;
     const id = req.params.id;
 
-    const existingHome = await Home.fetch(id);
-    const fav = existingHome.favourite;
+    const home = new Home(houseName, size, location, price, image, description, fav);
 
-    const home = new Home(id, houseName, size, location, price, image, description, fav);
-
-    await home.save(true);
-    if (fav) await Fav.updateFav(id);
+    await home.save(true,id);
 
     res.redirect("/host/listings?toast=Property updated successfully ✅");
 
@@ -76,7 +72,7 @@ exports.deleteHome = async (req, res) => {
 
     await Home.delete(homeId);
 
-    if (fav) await Fav.delete(homeId);
+    if (fav) await Fav.removeFromFav(homeId);
 
     res.redirect("/host/listings?toast=Listing deleted successfully 🗑️");
 

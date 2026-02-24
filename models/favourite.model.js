@@ -1,48 +1,35 @@
-const path = require("path");
-const fs = require("fs/promises");
-const rootDir = path.dirname(require.main.filename);
-const favFilePath = path.join(rootDir, "data", "favourite.json");
-const homeFilePath = path.join(rootDir, "data", "home.json");
-const Home = require("./home.model");
-
+const {ObjectId}=require("mongodb");
+const {getDb}=require("../utils/database");
 
 module.exports = class Fav {
 
     static async addToFav(id) {
         try {
-            const homes = await Home.fetchAll();
+            const db = getDb();
 
-            let fav = await Fav.fetchFav();
+            await db.collection('homes').updateOne(
+                { _id: new ObjectId(id) },
+                { $set: { favourite: true } }
+            );
 
-            const homeIndex = homes.findIndex(h => h.id == id);
-            if (homeIndex === -1) return "Home not found ❌";
+            await db.collection('favourites').insertOne({
+                homeId: id
+            });
 
-            // Mark as favourite in the main homes list
-            homes[homeIndex].favourite = true;
-            await fs.writeFile(homeFilePath, JSON.stringify(homes));
-
-            // Add to favourites list (avoid duplicates)
-            const alreadyExists = fav.some(h => h.id == id);
-            if (!alreadyExists) {
-                fav.push(homes[homeIndex]);
-                await fs.writeFile(favFilePath, JSON.stringify(fav));
-            }
-
-            return "Saved to wishlist ❤️"
-
-        }
-        catch (err) {
-            return "Something went wrong ⚠️"
+            return "Saved to wishlist ❤️";
+        } catch (err) {
+            console.log(err);
+            return "Something went wrong ⚠️";
         }
     }
 
     static async fetchFav() {
         try {
-            let favList = await fs.readFile(favFilePath, "utf-8");
+            const db=getDb();
 
-            favList = JSON.parse(favList);
+            let favouriteHomes=await db.collection('homes').find({favourite: true}).toArray();
 
-            return favList;
+            return favouriteHomes;
         }
         catch (err) {
             return [];
@@ -66,43 +53,17 @@ module.exports = class Fav {
 
     static async removeFromFav(id) {
         try {
-            let fav = await Fav.fetchFav();
-            const homes = await Home.fetchAll();
+            
+            const db=getDb();
 
-            // remove from fav list
-            fav = fav.filter(h => h.id != id);
+            await db.collection('homes').updateOne({_id: new ObjectId(id)},{$set: {favourite:false}});
 
-            // find home index
-            const homeIndex = homes.findIndex(h => h.id == id);
-
-            if (homeIndex !== -1) {
-                homes[homeIndex].favourite = false;
-            }
-
-            // update main homes file
-            await fs.writeFile(homeFilePath, JSON.stringify(homes));
-
-            // update fav file
-            await fs.writeFile(favFilePath, JSON.stringify(fav));
+            await db.collection('favourites').deleteOne({homeId: id});
 
             return "Removed from wishlist 🗑️";
 
         } catch (err) {
             return "Something went wrong ⚠️";
-        }
-    }
-
-    static async updateFav(id){
-        try{
-            let favouriteList=await Fav.fetchFav();
-            const updatedHome=await Home.fetch(id);
-
-            favouriteList=favouriteList.map(home => home.id == id? updatedHome : home);
-
-            await fs.writeFile(favFilePath, JSON.stringify(favouriteList));
-
-        }catch(err){
-            return err;
         }
     }
 

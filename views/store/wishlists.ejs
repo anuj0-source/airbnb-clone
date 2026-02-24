@@ -63,9 +63,9 @@
               style="animation-delay: <%- (index * 0.08 + 0.1).toFixed(2) %>s">
 
               <!-- Image -->
-              <a href="/homes/<%= home.id %>">
+              <a href="/homes/<%= home._id %>">
                 <div class="h-56 overflow-hidden relative">
-                  <img src="<%= home.image %>" alt="<%= home.houseName %>"
+                  <img src="<%= home.imageUrl %>" alt="<%= home.houseName %>"
                     class="w-full h-full object-cover transition duration-300 group-hover:scale-110" />
 
                   <!-- Saved Heart (filled) -->
@@ -87,7 +87,7 @@
                   </p>
 
                   <p class="text-gray-400 text-sm mt-1 line-clamp-2">
-                    <%= home.description %>
+                    <%= home.homeDescription %>
                   </p>
 
                   <p class="mt-2 text-gray-900 font-semibold">

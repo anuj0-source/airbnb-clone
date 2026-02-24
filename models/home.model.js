@@ -1,36 +1,33 @@
-const path = require("path");
-const fs = require("fs/promises");
-const rootdir = path.dirname(require.main.filename);
-const dataFilePath = path.join(rootdir, "data", "home.json");
+const {getDb} = require("../utils/database");
+const mongodb = require("mongodb");
 
 module.exports = class Home {
-  constructor(id, name, size, location, price, image, description, favourite) {
-    this.id = id;
+  constructor(name, size, location, price, image, description, favourite) {
     this.houseName = name;
     this.size = size;
     this.location = location;
-    this.price = price;
-    this.image = image;
-    this.description = description;
+    this.price = Number(price);
+    this.imageUrl = image;
+    this.homeDescription = description;
     this.favourite = favourite;
   }
 
-  async save(edit) {
+  async save(edit,id) {
     try {
 
-      let homes = await Home.fetchAll();
-
       if (edit) {
+        const db=getDb();
 
-        homes = homes.map(home => this.id == home.id ? this : home);
+        await db.collection('homes').updateOne(
+          {_id: new mongodb.ObjectId(id)},
+          {$set:this}
+        );
 
       }
       else {
-        homes.push(this);
+        const db=getDb();
+        await db.collection('homes').insertOne(this);
       }
-
-      await fs.writeFile(dataFilePath, JSON.stringify(homes));
-      console.log("Data saved in file!");
 
     } catch (err) {
       console.log(err);
@@ -39,49 +36,38 @@ module.exports = class Home {
 
   static async fetchAll() {
     try {
-      const data = await fs.readFile(dataFilePath, "utf-8");
-      let registeredHomes = JSON.parse(data);
-      return registeredHomes;
+
+      const db=getDb();
+      const homes = await db.collection('homes').find().toArray();
+
+      return homes;
+
     } catch (err) {
       return [];
     }
   }
 
   static async fetch(id) {
-    try {
-      const homes = await this.fetchAll();
+  try {
 
-      const home = homes.find(h => h.id == id); // loose compare safe here
+    const db=getDb();
 
-      return home || null;
+    const currentHome=await db.collection('homes').findOne({_id: new mongodb.ObjectId(id)});
 
-    } catch (err) {
-      return null;
-    }
+    return currentHome || null;
+
+  } catch (err) {
+    return null;
   }
+}
 
   static async delete(id) {
     try {
-      let homes = await Home.fetchAll();
-
-      const initialLength = homes.length;
-
-      homes = homes.filter(home => home.id != id);
-
-      if (homes.length === initialLength) {
-        console.log("No home found with this ID");
-      }
-
-      else {
-        await fs.writeFile(
-          dataFilePath,
-          JSON.stringify(homes, null, 2)
-        );
-
-        console.log("Home deleted!");
-      }
-
-    } catch (err) {
+      const db=getDb();
+      await db.collection('homes').deleteOne({_id: new mongodb.ObjectId(id)});
+      console.log("Home deleted!");
+    }
+    catch (err) {
       console.error("Error deleting home:", err);
       throw err;
     }

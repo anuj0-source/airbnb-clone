@@ -69,7 +69,7 @@
 
                 <!-- Image -->
                 <div class="h-48 overflow-hidden relative">
-                    <img src="<%= home.image %>"
+                    <img src="<%= home.imageUrl %>"
                          alt="<%= home.houseName %>"
                          class="w-full h-full object-cover transition duration-300 group-hover:scale-105"/>
                 </div>
@@ -87,7 +87,7 @@
                         </span>
                     </div>
 
-                    <p class="text-gray-400 text-sm mt-2 line-clamp-2"><%= home.description %></p>
+                    <p class="text-gray-400 text-sm mt-2 line-clamp-2"><%= home.homeDescription %></p>
 
                     <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
                         <p class="text-gray-900 font-bold text-lg">
@@ -101,14 +101,14 @@
 
                     <!-- Actions -->
                     <div class="flex gap-3 mt-4">
-                        <a href="/host/edit-home/<%= home.id %>"
+                        <a href="/host/edit-home/<%= home._id %>"
                            class="flex-1 text-center px-4 py-2 rounded-lg text-sm font-medium
                                   border border-gray-300 text-gray-700
                                   hover:bg-gray-50 transition active:scale-95">
                             Edit
                         </a>
                         <button type="button"
-                                data-action="/host/delete/<%= home.id %>?_method=DELETE"
+                                data-action="/host/delete/<%= home._id %>?_method=DELETE"
                                 data-name="<%= home.houseName %>"
                                 onclick="openDeleteModal(this.dataset.action, this.dataset.name)"
                                 class="flex-1 px-4 py-2 rounded-lg text-sm font-medium

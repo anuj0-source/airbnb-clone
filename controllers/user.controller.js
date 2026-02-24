@@ -5,6 +5,7 @@ const Fav = require("../models/favourite.model");
 exports.getHome = async (req, res) => {
   try {
     const homes = await Home.fetchAll();
+    console.log(homes);
     res.render("./store/home-list", { homes });
   } catch (err) {
     console.log(err);
