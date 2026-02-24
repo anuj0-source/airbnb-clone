@@ -1,69 +1,268 @@
-<div id="navbar"
-     class="sticky top-0 z-50 px-6 py-4 flex justify-between items-center 
-            bg-[#FF5A5F]/90 backdrop-blur-md transition-all duration-300">
+<!-- Navbar Styles -->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  #navbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,245,248,0.95));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,56,92,0.08);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .nav-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 14px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-logo img {
+    height: 34px;
+    width: auto;
+    filter: drop-shadow(0 2px 4px rgba(255,56,92,0.2));
+    transition: transform 0.3s ease;
+  }
+
+  .nav-logo:hover img {
+    transform: scale(1.08) rotate(-3deg);
+  }
+
+  .nav-logo span {
+    font-size: 22px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #FF385C, #E31C5F);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
+
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 4px;
+    background: rgba(0,0,0,0.03);
+    border-radius: 999px;
+    position: relative;
+  }
+
+  .nav-slider {
+    position: absolute;
+    height: calc(100% - 8px);
+    top: 4px;
+    left: 4px;
+    background: #FF385C;
+    border-radius: 999px;
+    box-shadow: 0 4px 15px rgba(255,56,92,0.35);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .nav-link {
+    display: block;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    color: #666;
+    transition: color 0.25s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  .nav-link:hover {
+    color: #FF385C;
+  }
+
+  .nav-link.active {
+    color: #fff;
+  }
+
+  .nav-cta {
+    display: block;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left: 4px;
+  }
+
+  .nav-cta.inactive {
+    color: #FF385C;
+    background: rgba(255,56,92,0.08);
+    border: 1.5px solid rgba(255,56,92,0.3);
+  }
+
+  .nav-cta.inactive:hover {
+    background: #FF385C;
+    color: #fff;
+    border-color: #FF385C;
+    box-shadow: 0 4px 15px rgba(255,56,92,0.35);
+    transform: translateY(-1px);
+  }
+
+  .nav-cta.active {
+    background: linear-gradient(135deg, #FF385C, #E31C5F);
+    color: #fff;
+    border: 1.5px solid transparent;
+    box-shadow: 0 4px 15px rgba(255,56,92,0.35);
+  }
+
+  #menuBtn {
+    display: none;
+    background: none;
+    border: 1.5px solid #eee;
+    border-radius: 12px;
+    padding: 8px;
+    font-size: 20px;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  #menuBtn:hover {
+    border-color: #FF385C;
+    color: #FF385C;
+    background: rgba(255,56,92,0.04);
+  }
+
+  @media (max-width: 768px) {
+    .nav-container { padding: 12px 20px; }
+    #menuBtn { display: flex !important; align-items: center; justify-content: center; }
+    .nav-menu {
+      display: none !important;
+      flex-direction: column;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 16px;
+      right: 16px;
+      width: auto;
+      background: #fff;
+      padding: 12px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+      border-radius: 20px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .nav-menu.show { display: flex !important; }
+    .nav-link, .nav-cta { text-align: center; }
+  }
+</style>
+
+<nav id="navbar">
+  <div class="nav-container">
 
     <!-- Logo -->
-    <a href="/">
-        <h1 class="text-white font-bold text-xl">Airbnb</h1>
+    <a href="/" class="nav-logo">
+      <img src="/airbnb.png" alt="logo">
+      <span>airbnb</span>
     </a>
 
-    <!-- Hamburger (mobile only) -->
-    <button id="menuBtn" class="md:hidden text-white text-2xl">
-        ☰
+    <!-- Hamburger -->
+    <button id="menuBtn">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
     </button>
 
     <!-- Menu -->
-    <ul id="menu"
-        class="absolute md:static top-full left-0 w-full md:w-auto 
-               bg-[#FF5A5F] md:bg-transparent
-               flex-col md:flex-row flex gap-6
-               p-6 md:p-0 hidden md:flex">
-
-        <!-- Home -->
-        <li class="relative group">
-            <a href="/" class="inline-block px-4 py-2 text-white">Home</a>
-            <span class="absolute left-0 bottom-0 h-[2px] bg-white transition-all duration-300
-                <%= url === '/' ? 'w-full' : 'w-0 group-hover:w-full' %>"></span>
-        </li>
-
-        <!-- Bookings -->
-        <li class="relative group">
-            <a href="/bookings" class="inline-block px-4 py-2 text-white">Bookings</a>
-            <span class="absolute left-0 bottom-0 h-[2px] bg-white transition-all duration-300
-                <%= url === '/bookings' ? 'w-full' : 'w-0 group-hover:w-full' %>"></span>
-        </li>
-
-        <!-- Wishlist -->
-        <li class="relative group">
-            <a href="/wishlists" class="inline-block px-4 py-2 text-white">Wishlists</a>
-            <span class="absolute left-0 bottom-0 h-[2px] bg-white transition-all duration-300
-                <%= url === '/wishlists' ? 'w-full' : 'w-0 group-hover:w-full' %>"></span>
-        </li>
-
-        <!-- Listings -->
-        <li class="relative group">
-            <a href="/host/listings" class="inline-block px-4 py-2 text-white">Listings</a>
-            <span class="absolute left-0 bottom-0 h-[2px] bg-white transition-all duration-300
-                <%= url === '/host/listings' ? 'w-full' : 'w-0 group-hover:w-full' %>"></span>
-        </li>
-
-        <!-- Add Property -->
-        <li class="relative group">
-            <a href="/host/add-home" class="inline-block px-4 py-2 text-white">
-                Add Property
-            </a>
-            <span class="absolute left-0 bottom-0 h-[2px] bg-white transition-all duration-300
-                <%= url === '/host/add-home' ? 'w-full' : 'w-0 group-hover:w-full' %>"></span>
-        </li>
+    <ul class="nav-menu" id="menu">
+      <div class="nav-slider" id="navSlider"></div>
+      <li><a href="/" class="nav-link <%= url === '/' ? 'active' : '' %>">Home</a></li>
+      <li><a href="/bookings" class="nav-link <%= url === '/bookings' ? 'active' : '' %>">Bookings</a></li>
+      <li><a href="/wishlists" class="nav-link <%= url === '/wishlists' ? 'active' : '' %>">Wishlists</a></li>
+      <li><a href="/host/listings" class="nav-link <%= url === '/host/listings' ? 'active' : '' %>">Listings</a></li>
+      <li><a href="/host/add-home" class="nav-cta <%= url === '/host/add-home' ? 'active' : 'inactive' %>">+ Add Property</a></li>
     </ul>
-</div>
+  </div>
+</nav>
 
-<!-- JS for toggle -->
 <script>
-    const menuBtn = document.getElementById("menuBtn");
-    const menu = document.getElementById("menu");
+  const menuBtn = document.getElementById("menuBtn");
+  const menu = document.getElementById("menu");
+  menuBtn.addEventListener("click", () => menu.classList.toggle("show"));
 
-    menuBtn.addEventListener("click", () => {
-        menu.classList.toggle("hidden");
+  // Sliding pill indicator
+  function getSliderPos(link) {
+    const menuEl = document.getElementById('menu');
+    const menuRect = menuEl.getBoundingClientRect();
+    const linkRect = link.getBoundingClientRect();
+    return {
+      width: linkRect.width,
+      left: linkRect.left - menuRect.left,
+      top: linkRect.top - menuRect.top,
+      height: linkRect.height
+    };
+  }
+
+  function applyPos(slider, pos) {
+    slider.style.width = pos.width + 'px';
+    slider.style.left = pos.left + 'px';
+    slider.style.top = pos.top + 'px';
+    slider.style.height = pos.height + 'px';
+    slider.style.opacity = '1';
+  }
+
+  (function initSlider() {
+    const activeLink = document.querySelector('.nav-link.active');
+    const slider = document.getElementById('navSlider');
+    if (!activeLink || !slider) return;
+
+    const currentPos = getSliderPos(activeLink);
+    const prevPosStr = localStorage.getItem('navSliderPos');
+
+    if (prevPosStr) {
+      // Start at previous position (no transition)
+      const prevPos = JSON.parse(prevPosStr);
+      slider.style.transition = 'none';
+      applyPos(slider, prevPos);
+
+      // Force reflow, then animate to current position
+      slider.offsetHeight;
+      slider.style.transition = 'all 0.45s cubic-bezier(0.4, 0, 0.2, 1)';
+      applyPos(slider, currentPos);
+    } else {
+      // First visit — just show at current position
+      slider.style.transition = 'none';
+      applyPos(slider, currentPos);
+    }
+
+    // Save current position for next page load
+    localStorage.setItem('navSliderPos', JSON.stringify(currentPos));
+
+    // Save position on nav link click (before navigation)
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        localStorage.setItem('navSliderPos', JSON.stringify(currentPos));
+      });
     });
+  })();
+
+  window.addEventListener('resize', () => {
+    const activeLink = document.querySelector('.nav-link.active');
+    const slider = document.getElementById('navSlider');
+    if (!activeLink || !slider) return;
+    slider.style.transition = 'none';
+    applyPos(slider, getSliderPos(activeLink));
+    localStorage.setItem('navSliderPos', JSON.stringify(getSliderPos(activeLink)));
+  });
 </script>
