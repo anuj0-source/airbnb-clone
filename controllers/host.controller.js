@@ -6,18 +6,18 @@ exports.addHomeGet = (req, res) => {
 };
 
 exports.addHomePost = async (req, res) => {
-  const { "house-name": houseName, size, location, price, image, description } = req.body;
+  const { "house-name": houseName, size, location, price, "image": imageUrl, "description": homeDescription } = req.body;
   let favourite = false;
-  const edit=false;
-  const home = new Home(houseName, size, location, price, image, description, favourite);
-  await home.save(edit);
+
+  const home = new Home({ houseName, size, location, price, imageUrl, homeDescription, favourite });
+  await home.save();
+
   res.render("./host/add-home-response");
-  console.log(home);
 };
 
 exports.getListing = async (req, res) => {
   try {
-    const homes = await Home.fetchAll();
+    const homes = await Home.find().lean();
 
     res.render("./host/host-home-list", { homes: homes });
   }
@@ -31,7 +31,7 @@ exports.getEditHome = async (req, res) => {
     const id = req.params.id;
     const editing = true;
 
-    const home = await Home.fetch(id);
+    const home = await Home.findById(id);
 
     res.render("./host/edit-home", {
       home: home,
@@ -45,14 +45,21 @@ exports.getEditHome = async (req, res) => {
 
 exports.postEditHome = async (req, res) => {
   try {
-    const { "house-name": houseName, size, location, price, image, description } = req.body;
+
+    const { "house-name": houseName, size, location, price, "image": imageUrl, "description": homeDescription } = req.body;
+
     const id = req.params.id;
-    const reqHome=await Home.fetch(id);
-    const fav=reqHome.favourite;
+    const reqHome = await Home.findById(id);
 
-    const home = new Home(houseName, size, location, price, image, description, fav);
-
-    await home.save(true,id);
+    await Home.findByIdAndUpdate(id, {
+      houseName,
+      size,
+      location,
+      price,
+      imageUrl,
+      homeDescription,
+      favourite: reqHome.favourite
+    });
 
     res.redirect("/host/listings?toast=Property updated successfully ✅");
 
@@ -68,12 +75,8 @@ exports.deleteHome = async (req, res) => {
   try {
 
     const homeId = req.params.id;
-    const existingHome = await Home.fetch(homeId);
-    const fav = existingHome.favourite;
 
-    await Home.delete(homeId);
-
-    if (fav) await Fav.removeFromFav(homeId);
+    await Home.findByIdAndDelete(homeId);
 
     res.redirect("/host/listings?toast=Listing deleted successfully 🗑️");
 

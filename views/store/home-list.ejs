@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%- include('../partials/favicon') %>
-    <link rel="stylesheet" href="output.css">
+    <link rel="stylesheet" href="/output.css">
     <title>Home</title>
     <style>
         @keyframes fadeUp {
@@ -42,7 +42,7 @@
                         <!-- Image -->
                         <a href="/homes/<%= home._id %>">
                             <div class="h-56 overflow-hidden relative">
-                                <img src="<%= home.imageUrl %>" 
+                                <img src="<%= home.imageUrl %>" loading="lazy"
                                      class="w-full h-full object-cover transition duration-300 group-hover:scale-110"/>
                                 <!-- Save Button (top-right of image) -->
                                 <%- include("../partials/save-btn",{home:home}) %>

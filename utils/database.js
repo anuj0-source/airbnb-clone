@@ -1,28 +1,15 @@
-const mongo = require("mongodb");
+const mongoose = require("mongoose");
 
-const MongoClient = mongo.MongoClient;
+const MONGO_URL = "mongodb+srv://anuj6202188:anujdb@cluster0.fnmyvge.mongodb.net/airbnb?retryWrites=true&w=majority";
 
-const MONGO_URL = "mongodb+srv://anuj6202188:anujdb@cluster0.fnmyvge.mongodb.net/?appName=Cluster0";
-
-let _db;
-
-async function mongoConnect() {
+async function dbConnect() {
     try {
-        const client = await MongoClient.connect(MONGO_URL);
-        _db=client.db("airbnb");
-        return client;
+        await mongoose.connect(MONGO_URL);
+        console.log("✅ MongoDB connected");
     } catch (err) {
         console.log("Error while connecting to mongoDb: ", err);
     }
 }
 
-const getDb = () => {
-  if (!_db) {
-    throw "Database not connected!";
-  }
-  return _db;
-};
-
-exports.mongoConnect=mongoConnect;
-
-exports.getDb=getDb;
+exports.dbConnect=dbConnect;
+exports.MONGO_URL=MONGO_URL;

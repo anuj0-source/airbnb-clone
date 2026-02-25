@@ -36,7 +36,7 @@ function saveToWishlist(btn) {
         svg.setAttribute('fill', isFav ? 'currentColor' : 'none');
 
         if (typeof showToast === 'function') {
-            showToast(data.message || (isFav ? 'Saved ❤️' : 'Removed 🗑️'));
+            showToast(data.message || (isFav ? 'Saved to wishlist ❤️' : 'Removed from wishlist 🗑️'));
         }
     })
     .catch(() => {

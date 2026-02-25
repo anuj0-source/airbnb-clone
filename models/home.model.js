@@ -1,76 +1,56 @@
-const {getDb} = require("../utils/database");
-const mongodb = require("mongodb");
+const mongoose = require("mongoose");
+const Fav = require("./favourite.model");
 
-module.exports = class Home {
-  constructor(name, size, location, price, image, description, favourite) {
-    this.houseName = name;
-    this.size = size;
-    this.location = location;
-    this.price = Number(price);
-    this.imageUrl = image;
-    this.homeDescription = description;
-    this.favourite = favourite;
+const homeSchema=new mongoose.Schema({
+
+  houseName:{
+    type:String,
+    required:true
+  },
+
+  size:{
+    type:String,
+    required:true
+  },
+
+  location:{
+    type:String,
+    required:true
+  },
+
+  price:{
+    type:Number,
+    required:true
+  },
+
+  imageUrl:{
+    type:String,
+    required:true
+  },
+
+  homeDescription:{
+    type:String,
+    required:false
+  },
+  
+  favourite:{
+    type:Boolean,
+    required:true
   }
 
-  async save(edit,id) {
-    try {
+});
 
-      if (edit) {
-        const db=getDb();
-
-        await db.collection('homes').updateOne(
-          {_id: new mongodb.ObjectId(id)},
-          {$set:this}
-        );
-
-      }
-      else {
-        const db=getDb();
-        await db.collection('homes').insertOne(this);
-      }
-
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  static async fetchAll() {
-    try {
-
-      const db=getDb();
-      const homes = await db.collection('homes').find().toArray();
-
-      return homes;
-
-    } catch (err) {
-      return [];
-    }
-  }
-
-  static async fetch(id) {
+homeSchema.pre('findOneAndDelete', async function () {
   try {
+    const homeId = this.getQuery()._id;
 
-    const db=getDb();
-
-    const currentHome=await db.collection('homes').findOne({_id: new mongodb.ObjectId(id)});
-
-    return currentHome || null;
+    await Fav.deleteMany({ homeId: homeId });
 
   } catch (err) {
-    return null;
+    console.log("Error while pre:", err);
+    return err;
   }
-}
+});
 
-  static async delete(id) {
-    try {
-      const db=getDb();
-      await db.collection('homes').deleteOne({_id: new mongodb.ObjectId(id)});
-      console.log("Home deleted!");
-    }
-    catch (err) {
-      console.error("Error deleting home:", err);
-      throw err;
-    }
-  }
-
-};
+const Home = mongoose.model("Home", homeSchema);
+module.exports=Home;
