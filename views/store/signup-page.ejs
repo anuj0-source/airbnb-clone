@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('../partials/favicon') %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Sign up – Airbnb</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #FFF5F7 0%, #FFF 40%, #FFF5F7 100%);
+        }
+
+        .signup-card {
+            width: 100%;
+            max-width: 480px;
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04);
+            padding: 40px 36px 36px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .signup-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #FF385C, #E31C5F, #BD1E59);
+        }
+
+        .signup-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .signup-header img {
+            height: 42px;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 2px 6px rgba(255,56,92,0.2));
+        }
+
+        .signup-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 6px;
+        }
+
+        .signup-header p {
+            font-size: 14px;
+            color: #717171;
+        }
+
+        .name-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .name-row .form-group {
+            flex: 1;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 6px;
+            letter-spacing: 0.2px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1.5px solid #DDDDDD;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            color: #222;
+            background: #fff;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input::placeholder {
+            color: #B0B0B0;
+        }
+
+        .form-group input:focus {
+            border-color: #222;
+            box-shadow: 0 0 0 2px rgba(34,34,34,0.1);
+        }
+
+        .user-type-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 10px;
+            letter-spacing: 0.2px;
+        }
+
+        .user-type-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .user-type-option {
+            flex: 1;
+            position: relative;
+        }
+
+        .user-type-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .user-type-option label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 16px 12px;
+            border: 1.5px solid #DDDDDD;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .user-type-option label .type-icon {
+            font-size: 24px;
+        }
+
+        .user-type-option label .type-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #222;
+        }
+
+        .user-type-option label .type-desc {
+            font-size: 11px;
+            color: #717171;
+        }
+
+        .user-type-option input[type="radio"]:checked + label {
+            border-color: #FF385C;
+            background: rgba(255,56,92,0.04);
+            box-shadow: 0 0 0 1px #FF385C;
+        }
+
+        .user-type-option label:hover {
+            border-color: #222;
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            color: #fff;
+            background: linear-gradient(135deg, #FF385C, #E31C5F);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 0.2px;
+        }
+
+        .signup-btn:hover {
+            background: linear-gradient(135deg, #E31C5F, #BD1E59);
+            box-shadow: 0 6px 20px rgba(255,56,92,0.35);
+            transform: translateY(-1px);
+        }
+
+        .signup-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(255,56,92,0.3);
+        }
+
+        .signup-footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 14px;
+            color: #717171;
+        }
+
+        .signup-footer a {
+            color: #FF385C;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Inline toast notification */
+        .toast-warning {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: #fff;
+            border-left: 4px solid #FF385C;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);
+            padding: 14px 20px 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+            max-width: 420px;
+            width: max-content;
+        }
+
+        .toast-warning.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        .toast-warning .toast-icon {
+            flex-shrink: 0;
+            width: 22px;
+            height: 22px;
+        }
+
+        .toast-warning .toast-msg {
+            font-size: 14px;
+            font-weight: 500;
+            color: #222;
+            line-height: 1.4;
+        }
+
+        .toast-warning .toast-close {
+            flex-shrink: 0;
+            margin-left: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #717171;
+            font-size: 18px;
+            padding: 2px;
+            line-height: 1;
+            transition: color 0.15s;
+        }
+
+        .toast-warning .toast-close:hover {
+            color: #222;
+        }
+
+        .form-group input.input-error {
+            border-color: #FF385C;
+            box-shadow: 0 0 0 2px rgba(255,56,92,0.12);
+        }
+
+        .form-group input.input-error:focus {
+            border-color: #FF385C;
+            box-shadow: 0 0 0 2px rgba(255,56,92,0.2);
+        }
+
+        /* ── Error Alert Banner ── */
+        .error-banner {
+            background: linear-gradient(135deg, #FFF5F7 0%, #FFF0F3 100%);
+            border: 1px solid rgba(255, 56, 92, 0.2);
+            border-left: 4px solid #FF385C;
+            border-radius: 12px;
+            padding: 16px 18px;
+            margin-bottom: 20px;
+            animation: slideDown 0.35s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .error-banner-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .error-banner-header svg {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+        }
+
+        .error-banner-header span {
+            font-size: 14px;
+            font-weight: 600;
+            color: #C13515;
+        }
+
+        .error-banner-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .error-banner-list li {
+            font-size: 13px;
+            color: #6B2D13;
+            padding: 4px 0 4px 28px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .error-banner-list li::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #FF385C;
+        }
+
+        .error-banner-dismiss {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 8px;
+        }
+
+        .error-banner-dismiss button {
+            background: none;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            color: #FF385C;
+            cursor: pointer;
+            padding: 2px 4px;
+            font-family: 'Inter', sans-serif;
+            transition: color 0.15s;
+        }
+
+        .error-banner-dismiss button:hover {
+            color: #BD1E59;
+            text-decoration: underline;
+        }
+
+        /* ── Inline Field Errors ── */
+        .field-error {
+            font-size: 12px;
+            color: #C13515;
+            margin-top: 5px;
+            padding-left: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            animation: fadeIn 0.25s ease-out;
+        }
+
+        .field-error svg {
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 480px) {
+            .signup-card {
+                margin: 16px;
+                padding: 32px 24px 28px;
+            }
+            .name-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            .toast-warning {
+                width: calc(100% - 32px);
+                top: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="signup-card">
+
+        <!-- Header -->
+        <div class="signup-header">
+            <img src="/airbnb.png" alt="Airbnb">
+            <h1>Create your account</h1>
+            <p>Join the Airbnb community today</p>
+        </div>
+
+        <form method="POST" action="/signup">
+
+            <!-- Name Row -->
+            <div class="name-row">
+                <div class="form-group">
+                    <label>First name</label>
+                    <input type="text" name="firstName" placeholder="First name" value="<%= validationFail || isExist ? oldValues.firstName : '' %>" class="<%= fieldErrors.firstName ? 'input-error' : '' %>" required>
+                    <% if (fieldErrors.firstName) { %>
+                    <div class="field-error">
+                        <svg viewBox="0 0 20 20" fill="#C13515"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                        <%= fieldErrors.firstName %>
+                    </div>
+                    <% } %>
+                </div>
+                <div class="form-group">
+                    <label>Last name</label>
+                    <input type="text" name="lastName" placeholder="Last name" value="<%= validationFail || isExist ? oldValues.lastName : '' %>" class="<%= fieldErrors.lastName ? 'input-error' : '' %>">
+                    <% if (fieldErrors.lastName) { %>
+                    <div class="field-error">
+                        <svg viewBox="0 0 20 20" fill="#C13515"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                        <%= fieldErrors.lastName %>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="you@example.com" value="<%= validationFail || isExist ? oldValues.email : '' %>" class="<%= fieldErrors.email ? 'input-error' : '' %>" required>
+                <% if (fieldErrors.email || isExist) { %>
+                <div class="field-error">
+                    <svg viewBox="0 0 20 20" fill="#C13515"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                    <%= fieldErrors.email || "Email already exists" %>
+                </div>
+                <% } %>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Create a password" id="password" value="<%= validationFail || isExist ? oldValues.password : '' %>" class="<%= fieldErrors.password ? 'input-error' : '' %>" required>
+                <% if (fieldErrors.password) { %>
+                <div class="field-error">
+                    <svg viewBox="0 0 20 20" fill="#C13515"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                    <%= fieldErrors.password %>
+                </div>
+                <% } %>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="form-group">
+                <label>Confirm password</label>
+                <input type="password" name="confirmPassword" placeholder="Re-enter your password" id="confirm-password" value="<%= validationFail || isExist ? oldValues.confirmPassword : '' %>" class="<%= fieldErrors.confirmPassword ? 'input-error' : '' %>" required>
+                <% if (fieldErrors.confirmPassword) { %>
+                <div class="field-error">
+                    <svg viewBox="0 0 20 20" fill="#C13515"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                    <%= fieldErrors.confirmPassword %>
+                </div>
+                <% } %>
+            </div>
+
+            <!-- User Type -->
+            <span class="user-type-label">I want to</span>
+            <div class="user-type-group">
+                <div class="user-type-option">
+                    <input type="radio" name="userType" value="guest" id="typeGuest" checked>
+                    <label for="typeGuest">
+                        <span class="type-icon">🏖️</span>
+                        <span class="type-text">Travel</span>
+                        <span class="type-desc">Find amazing stays</span>
+                    </label>
+                </div>
+                <div class="user-type-option">
+                    <input type="radio" name="userType" value="host" id="typeHost">
+                    <label for="typeHost">
+                        <span class="type-icon">🏠</span>
+                        <span class="type-text">Host</span>
+                        <span class="type-desc">List my property</span>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="signup-btn">Sign up</button>
+        </form>
+
+        <!-- Footer -->
+        <div class="signup-footer">
+            Already have an account? <a href="/login">Log in</a>
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div class="toast-warning" id="toastWarning">
+        <svg class="toast-icon" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="#FF385C" stroke-width="2"/>
+            <path d="M12 8v4" stroke="#FF385C" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="12" cy="16" r="1" fill="#FF385C"/>
+        </svg>
+        <span class="toast-msg" id="toastMsg"></span>
+        <button class="toast-close" id="toastClose">&times;</button>
+    </div>
+
+    <script>
+        const signupBtn = document.querySelector(".signup-btn");
+        const passInput = document.querySelector("#password");
+        const cnfrmPassInput = document.querySelector("#confirm-password");
+        const toast = document.getElementById("toastWarning");
+        const toastMsg = document.getElementById("toastMsg");
+        const toastClose = document.getElementById("toastClose");
+        let toastTimer;
+
+        function showToast(message) {
+            toastMsg.textContent = message;
+            toast.classList.add("show");
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove("show"), 4000);
+        }
+
+        toastClose.addEventListener("click", () => {
+            toast.classList.remove("show");
+            clearTimeout(toastTimer);
+        });
+
+        signupBtn.addEventListener("click", (event) => {
+            const pass = passInput.value;
+            const cnfPass = cnfrmPassInput.value;
+
+            // Clear previous error states
+            passInput.classList.remove("input-error");
+            cnfrmPassInput.classList.remove("input-error");
+
+            if (pass !== cnfPass) {
+                event.preventDefault();
+                passInput.classList.add("input-error");
+                cnfrmPassInput.classList.add("input-error");
+                showToast("Passwords do not match. Please try again.");
+            }
+        });
+
+        // Remove error styling on input
+        [passInput, cnfrmPassInput].forEach(input => {
+            input.addEventListener("input", () => {
+                input.classList.remove("input-error");
+            });
+        });
+    </script>
+
+</body>
+</html>

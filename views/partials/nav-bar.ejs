@@ -5,274 +5,337 @@
 
 <!-- Navbar Styles -->
 <style>
+  /* ===== NAVBAR BASE ===== */
   #navbar {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,245,248,0.95));
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255,56,92,0.08);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    background: #ffffff;
+    border-bottom: 1px solid #EBEBEB;
     font-family: 'Inter', sans-serif;
   }
 
   .nav-container {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 14px 32px;
+    padding: 0 40px;
+    height: 80px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
+  /* ===== LOGO ===== */
   .nav-logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
     text-decoration: none;
+    flex-shrink: 0;
   }
 
   .nav-logo img {
     height: 34px;
     width: auto;
-    filter: drop-shadow(0 2px 4px rgba(255,56,92,0.2));
-    transition: transform 0.3s ease;
+    transition: opacity 0.2s;
   }
 
-  .nav-logo:hover img {
-    transform: scale(1.08) rotate(-3deg);
-  }
+  .nav-logo:hover img { opacity: 0.85; }
 
   .nav-logo span {
-    font-size: 22px;
+    font-size: 21px;
     font-weight: 700;
-    background: linear-gradient(135deg, #FF385C, #E31C5F);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #FF385C;
     letter-spacing: -0.5px;
   }
 
-  .nav-menu {
+  /* ===== CENTER TABS ===== */
+  .nav-tabs {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+
+  .nav-tab-link {
+    padding: 0 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #717171;
+    text-decoration: none;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .nav-tab-link::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 16px;
+    right: 16px;
+    height: 2px;
+    background: #222;
+    transform: scaleX(0);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .nav-tab-link:hover {
+    color: #222;
+  }
+
+  .nav-tab-link:hover::after {
+    transform: scaleX(0.6);
+  }
+
+  .nav-tab-link.active {
+    color: #222;
+    font-weight: 600;
+  }
+
+  .nav-tab-link.active::after {
+    transform: scaleX(1);
+  }
+
+  /* ===== RIGHT SECTION ===== */
+  .nav-right {
     display: flex;
     align-items: center;
     gap: 4px;
-    list-style: none;
-    margin: 0;
-    padding: 4px;
-    background: rgba(0,0,0,0.03);
-    border-radius: 999px;
-    position: relative;
+    flex-shrink: 0;
   }
 
-  .nav-slider {
-    position: absolute;
-    height: calc(100% - 8px);
-    top: 4px;
-    left: 4px;
-    background: #FF385C;
-    border-radius: 999px;
-    box-shadow: 0 4px 15px rgba(255,56,92,0.35);
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  .nav-link {
-    display: block;
-    padding: 10px 20px;
-    border-radius: 999px;
+  .nav-host-link {
+    padding: 10px 14px;
     font-size: 14px;
     font-weight: 500;
+    color: #222;
     text-decoration: none;
-    color: #666;
-    transition: color 0.25s ease;
+    border-radius: 22px;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-host-link:hover {
+    background: #F7F7F7;
+  }
+
+  /* Globe icon button */
+  .nav-globe-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    color: #222;
+  }
+
+  .nav-globe-btn:hover {
+    background: #F7F7F7;
+  }
+
+  /* ===== PROFILE BUTTON ===== */
+  .profile-wrapper {
     position: relative;
-    z-index: 1;
-  }
-
-  .nav-link:hover {
-    color: #FF385C;
-  }
-
-  .nav-link.active {
-    color: #fff;
-  }
-
-  .nav-cta {
-    display: block;
-    padding: 10px 20px;
-    border-radius: 999px;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     margin-left: 4px;
   }
 
-  .nav-cta.inactive {
-    color: #FF385C;
-    background: rgba(255,56,92,0.08);
-    border: 1.5px solid rgba(255,56,92,0.3);
-  }
-
-  .nav-cta.inactive:hover {
-    background: #FF385C;
-    color: #fff;
-    border-color: #FF385C;
-    box-shadow: 0 4px 15px rgba(255,56,92,0.35);
-    transform: translateY(-1px);
-  }
-
-  .nav-cta.active {
-    background: linear-gradient(135deg, #FF385C, #E31C5F);
-    color: #fff;
-    border: 1.5px solid transparent;
-    box-shadow: 0 4px 15px rgba(255,56,92,0.35);
-  }
-
-  #menuBtn {
-    display: none;
-    background: none;
-    border: 1.5px solid #eee;
-    border-radius: 12px;
-    padding: 8px;
-    font-size: 20px;
-    color: #555;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  #menuBtn:hover {
-    border-color: #FF385C;
-    color: #FF385C;
-    background: rgba(255,56,92,0.04);
-  }
-
-  .nav-login-btn {
-    display: inline-flex;
+  .profile-btn {
+    display: flex;
     align-items: center;
-    padding: 9px 22px;
-    border-radius: 999px;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    color: #FF385C;
-    background: transparent;
-    border: 1.5px solid #FF385C;
-    transition: all 0.25s ease;
-    letter-spacing: 0.2px;
-    margin-left: 12px;
+    gap: 10px;
+    padding: 5px 5px 5px 12px;
+    border: 1px solid #DDDDDD;
+    border-radius: 21px;
+    background: #fff;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    font-family: 'Inter', sans-serif;
   }
 
-  .nav-login-btn:hover {
-    transform: translateY(-1px);
+  .profile-btn:hover {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+
+  .profile-btn .hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .profile-btn .hamburger-icon span {
+    display: block;
+    width: 14px;
+    height: 2px;
+    background: #222;
+    border-radius: 2px;
+  }
+
+  .profile-btn .user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #717171;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .profile-btn .user-avatar svg {
+    width: 18px;
+    height: 18px;
     color: #fff;
-    background: linear-gradient(135deg, #FF385C, #E31C5F);
-    border-color: transparent;
-    box-shadow: 0 6px 20px rgba(255,56,92,0.4);
   }
 
-  .nav-login-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(255,56,92,0.3);
-  }
-
-  .nav-login-btn.active {
-    color: #fff;
-    background: linear-gradient(135deg, #FF385C, #E31C5F);
-    border-color: transparent;
-    box-shadow: 0 4px 15px rgba(255,56,92,0.3);
-  }
-
-  .nav-login-mobile-li {
+  /* ===== DROPDOWN ===== */
+  .profile-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 240px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+    border: 1px solid #EBEBEB;
+    padding: 8px 0;
     display: none;
+    z-index: 200;
+    animation: dropdownFadeIn 0.15s ease;
   }
 
+  @keyframes dropdownFadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .profile-dropdown.show {
+    display: block;
+  }
+
+  .dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 11px 16px;
+    font-size: 14px;
+    color: #222;
+    text-decoration: none;
+    background: none;
+    border: none;
+    text-align: left;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+
+  .dropdown-item:hover {
+    background: #F7F7F7;
+  }
+
+  .dropdown-item.bold {
+    font-weight: 600;
+  }
+
+  .dropdown-divider {
+    height: 1px;
+    background: #EBEBEB;
+    margin: 4px 0;
+  }
+
+  /* ===== BOTTOM TAB BAR (mobile) ===== */
+  .bottom-tabs {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: #fff;
+    border-top: 1px solid #EBEBEB;
+    padding: 6px 0 calc(6px + env(safe-area-inset-bottom, 0px));
+    font-family: 'Inter', sans-serif;
+  }
+
+  .bottom-tabs-inner {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .bottom-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    text-decoration: none;
+    padding: 4px 8px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .bottom-tab svg {
+    width: 24px;
+    height: 24px;
+    color: #717171;
+    stroke: #717171;
+    fill: none;
+    transition: color 0.15s, stroke 0.15s;
+  }
+
+  .bottom-tab .tab-label {
+    font-size: 10px;
+    font-weight: 500;
+    color: #717171;
+    transition: color 0.15s;
+  }
+
+  .bottom-tab.active svg {
+    color: #FF385C;
+    stroke: #FF385C;
+  }
+
+  .bottom-tab.active .tab-label {
+    color: #FF385C;
+    font-weight: 600;
+  }
+
+  /* ===== RESPONSIVE ===== */
   @media (max-width: 768px) {
     .nav-container {
-      padding: 12px 20px;
-      position: relative;
+      padding: 0 16px;
+      height: 64px;
     }
-    .nav-logo span {
-      font-size: 18px;
-    }
-    .nav-logo img {
-      height: 28px;
-    }
-    #menuBtn {
-      display: flex !important;
-      align-items: center;
-      justify-content: center;
-      order: 3;
-    }
-    .nav-menu {
-      display: none !important;
-      flex-direction: column;
-      position: absolute;
-      top: calc(100% + 8px);
-      left: 16px;
-      right: 16px;
-      width: auto;
-      background: #fff;
-      padding: 16px;
-      gap: 6px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
-      border-radius: 20px;
-      border: 1px solid rgba(0,0,0,0.06);
-      z-index: 100;
-    }
-    .nav-menu.show { display: flex !important; }
-    .nav-slider { display: none !important; }
-    .nav-link {
-      text-align: center;
-      padding: 14px 20px;
-      border-radius: 14px;
-      color: #333;
-      font-size: 15px;
-    }
-    .nav-link:hover {
-      background: rgba(255,56,92,0.06);
-    }
-    .nav-link.active {
-      background: linear-gradient(135deg, #FF385C, #E31C5F);
-      color: #fff;
-    }
-    .nav-cta {
-      text-align: center;
-      margin-left: 0;
-      margin-top: 4px;
-      padding: 14px 20px;
-      border-radius: 14px;
-      font-size: 15px;
-    }
-    .nav-login-btn {
-      display: none;
-    }
-    .nav-login-mobile-li {
+
+    .nav-logo span { font-size: 18px; }
+    .nav-logo img { height: 28px; }
+
+    .nav-tabs { display: none !important; }
+    .nav-right { display: none !important; }
+
+    .bottom-tabs {
       display: block;
     }
-    .nav-login-mobile {
-      display: block;
-      width: 100%;
-      text-align: center;
-      padding: 14px 20px;
-      border-radius: 14px;
-      font-size: 15px;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      text-decoration: none;
-      color: #fff;
-      background: linear-gradient(135deg, #FF385C, #E31C5F);
-      border: none;
-      margin-top: 6px;
-      cursor: pointer;
-    }
-    .nav-login-mobile:hover {
-      box-shadow: 0 4px 15px rgba(255,56,92,0.35);
-    }
-    .nav-login-mobile.active {
-      box-shadow: 0 4px 15px rgba(255,56,92,0.35);
+
+    /* Add padding to body so content isn't hidden behind bottom bar */
+    body {
+      padding-bottom: 64px;
     }
   }
 </style>
@@ -282,130 +345,146 @@
 
     <!-- Logo -->
     <a href="/" class="nav-logo">
-      <img src="/airbnb.png" alt="logo">
+      <img src="/airbnb.png" alt="Airbnb">
       <span>airbnb</span>
     </a>
 
-    <!-- Hamburger -->
-    <button id="menuBtn">
-      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/>
-      </svg>
-    </button>
-
-    <!-- Menu -->
-    <ul class="nav-menu" id="menu">
-      <div class="nav-slider" id="navSlider"></div>
-      <li><a href="/" class="nav-link <%= url === '/' ? 'active' : ''%>">Home</a></li>
-
-      <% if(isLoggedIn == true){ %>
-      <li><a href="/bookings" class="nav-link <%= url === '/bookings' ? 'active' : '' %>">Bookings</a></li>
-      <li><a href="/wishlists" class="nav-link <%= url === '/wishlists' ? 'active' : '' %>">Wishlists</a></li>
-      <li><a href="/host/listings" class="nav-link <%= url === '/host/listings' ? 'active' : '' %>">Listings</a></li>
-      <li><a href="/host/add-home" class="nav-cta <%= url === '/host/add-home' ? 'active' : 'inactive' %>">+ Add Property</a></li>
+    <!-- Center Tabs -->
+    <ul class="nav-tabs">
+      <li><a href="/" class="nav-tab-link <%= url === '/' ? 'active' : '' %>">Home</a></li>
+      <% if (isLoggedIn) { %>
+      <li><a href="/bookings" class="nav-tab-link <%= url === '/bookings' ? 'active' : '' %>">Bookings</a></li>
+      <li><a href="/wishlists" class="nav-tab-link <%= url === '/wishlists' ? 'active' : '' %>">Wishlists</a></li>
+      <li><a href="/host/listings" class="nav-tab-link <%= url === '/host/listings' ? 'active' : '' %>">Listings</a></li>
       <% } %>
-      <li class="nav-login-mobile-li">
-        <% if(isLoggedIn) { %>
-          <form method="POST" action="/logout" style="margin:0;">
-            <button type="submit" class="nav-login-mobile">Logout</button>
-          </form>
-        <% } else { %>
-          <a href="/login" class="nav-login-mobile <%= url === '/login' ? 'active' : '' %>">Login</a>
-        <% } %>
-      </li>
     </ul>
 
-    <!-- Login Button -->
-    <form method=<%= isLoggedIn? 'POST' : 'GET' %> action=<%= isLoggedIn? '/logout' : '/login' %>>
-    <button type="submit" class="nav-login-btn <%= url === '/login' ? 'active' : '' %>"><%= isLoggedIn? 'Logout' : 'Login' %></button>
-    </form>
+    <!-- Right Section -->
+    <div class="nav-right">
+      <% if (isLoggedIn) { %>
+      <a href="/host/add-home" class="nav-host-link">Airbnb your home</a>
+      <% } %>
+
+
+      <!-- Profile Menu -->
+      <div class="profile-wrapper">
+        <button class="profile-btn" id="profileBtn" aria-label="User menu">
+          <div class="hamburger-icon">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="user-avatar">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v2h20v-2c0-3.33-6.67-5-10-5z"/>
+            </svg>
+          </div>
+        </button>
+
+        <div class="profile-dropdown" id="profileDropdown">
+          <% if (isLoggedIn) { %>
+            <a href="/host/add-home" class="dropdown-item">Add property</a>
+            <a href="/host/listings" class="dropdown-item">Manage listings</a>
+            <div class="dropdown-divider"></div>
+            <form method="POST" action="/logout" style="margin:0;">
+              <button type="submit" class="dropdown-item">Log out</button>
+            </form>
+          <% } else { %>
+            <a href="/login" class="dropdown-item bold">Log in</a>
+            <a href="/signup" class="dropdown-item">Sign up</a>
+            <div class="dropdown-divider"></div>
+            <a href="/host/add-home" class="dropdown-item">Airbnb your home</a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+<!-- Bottom Tab Bar (mobile) -->
+<nav class="bottom-tabs">
+  <div class="bottom-tabs-inner">
+
+    <!-- Explore / Home -->
+    <a href="/" class="bottom-tab <%= url === '/' ? 'active' : '' %>">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <span class="tab-label">Explore</span>
+    </a>
+
+    <!-- Wishlists -->
+    <a href="/wishlists" class="bottom-tab <%= url === '/wishlists' ? 'active' : '' %>">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+      <span class="tab-label">Wishlists</span>
+    </a>
+
+    <% if (isLoggedIn) { %>
+    <!-- Bookings -->
+    <a href="/bookings" class="bottom-tab <%= url === '/bookings' ? 'active' : '' %>">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+      </svg>
+      <span class="tab-label">Trips</span>
+    </a>
+
+    <!-- Listings -->
+    <a href="/host/listings" class="bottom-tab <%= url === '/host/listings' ? 'active' : '' %>">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span class="tab-label">Listings</span>
+    </a>
+    <% } %>
+
+    <!-- Profile / Login -->
+    <% if (isLoggedIn) { %>
+    <a href="/profile" class="bottom-tab <%= url === '/profile' ? 'active' : '' %>">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span class="tab-label">Profile</span>
+    </a>
+    <% } else { %>
+    <a href="/login" class="bottom-tab <%= url === '/login' ? 'active' : '' %>">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>
+      </svg>
+      <span class="tab-label">Log in</span>
+    </a>
+    <% } %>
+
   </div>
 </nav>
 
 <script>
-  const menuBtn = document.getElementById("menuBtn");
-  const menu = document.getElementById("menu");
-  menuBtn.addEventListener("click", () => menu.classList.toggle("show"));
+  // === Profile dropdown toggle ===
+  const profileBtn = document.getElementById('profileBtn');
+  const profileDropdown = document.getElementById('profileDropdown');
 
-  const navLogo=document.querySelector(".nav-logo");
+  profileBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    profileDropdown.classList.toggle('show');
+  });
 
-  navLogo.addEventListener('click',(event)=>{
-    const currPath=window.location.href;
-
-    if(currPath == 'http://localhost:3000/'){
-        event.preventDefault();
+  // Close dropdown on outside click
+  document.addEventListener('click', (e) => {
+    if (!profileDropdown.contains(e.target) && !profileBtn.contains(e.target)) {
+      profileDropdown.classList.remove('show');
     }
 
   });
 
-  // Sliding pill indicator
-  (function initSlider() {
-    const slider = document.getElementById('navSlider');
-    const activeLink = document.querySelector('.nav-link.active');
-    const menuEl = document.getElementById('menu');
-    if (!slider || !menuEl) return;
+  // === Prevent reload on active page logo click ===
+  document.querySelector('.nav-logo').addEventListener('click', (e) => {
+    if (window.location.pathname === '/') e.preventDefault();
+  });
 
-    function getPos(link) {
-      const mRect = menuEl.getBoundingClientRect();
-      const lRect = link.getBoundingClientRect();
-      return {
-        width: lRect.width,
-        height: lRect.height,
-        left: lRect.left - mRect.left,
-        top: lRect.top - mRect.top
-      };
-    }
-
-    function setPos(pos, animate) {
-      if (!animate) slider.style.transition = 'none';
-      else slider.style.transition = 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
-      slider.style.width = pos.width + 'px';
-      slider.style.height = pos.height + 'px';
-      slider.style.left = pos.left + 'px';
-      slider.style.top = pos.top + 'px';
-      slider.style.opacity = '1';
-    }
-
-    // On load: place slider instantly on the active link
-    if (activeLink) {
-      setPos(getPos(activeLink), false);
-    } else {
-      slider.style.opacity = '0';
-    }
-
-    // On click: animate slider to clicked link, THEN navigate
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const href = this.getAttribute('href');
-        if (this.classList.contains('active')) {
-          return;
-        }
-
-        const clickedLink = this;
-
-        // Fade old active link text back to gray
-        if (activeLink) {
-          activeLink.style.transition = 'color 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
-          activeLink.style.color = '#666';
-        }
-
-        // Fade clicked link text to white (in sync with pill)
-        clickedLink.style.transition = 'color 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
-        clickedLink.style.color = '#fff';
-
-        // Slide pill to clicked link
-        slider.offsetHeight;
-        setPos(getPos(clickedLink), true);
-
-        // Navigate after the slide animation finishes
-        setTimeout(() => { window.location.href = href; }, 380);
-      });
+  // === Prevent reload on active tab click ===
+  document.querySelectorAll('.nav-tab-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+      if (this.classList.contains('active')) e.preventDefault();
     });
-
-    // Recalculate on resize
-    window.addEventListener('resize', () => {
-      if (activeLink) setPos(getPos(activeLink), false);
-    });
-  })();
+  });
 </script>
