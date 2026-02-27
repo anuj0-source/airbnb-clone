@@ -10,7 +10,7 @@
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(255,255,255,0.98);
+    background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid #EBEBEB;
@@ -19,7 +19,7 @@
   }
 
   #navbar.scrolled {
-    box-shadow: 0 1px 12px rgba(0,0,0,0.06);
+    box-shadow: 0 1px 12px rgba(0, 0, 0, 0.06);
   }
 
   /* 3-column grid for TRUE center alignment */
@@ -43,7 +43,9 @@
     transition: transform 0.2s, opacity 0.2s;
   }
 
-  .nav-logo:hover { transform: scale(1.02); }
+  .nav-logo:hover {
+    transform: scale(1.02);
+  }
 
   .nav-logo img {
     height: 32px;
@@ -151,31 +153,62 @@
   }
 
   .nav-host-link {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
+    gap: 8px;
+    padding: 10px 20px;
     font-size: 14px;
     font-weight: 600;
     color: #222;
     text-decoration: none;
-    border-radius: 24px;
-    transition: all 0.2s;
+    border-radius: 48px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
-    border: none;
-    background: none;
+    border: 1.5px solid #DDDDDD;
+    background: #fff;
     cursor: pointer;
     font-family: 'Inter', sans-serif;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nav-host-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 48px;
+    background: linear-gradient(135deg, #FF385C 0%, #E61E4D 50%, #D70466 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
 
   .nav-host-link:hover {
-    background: #F7F7F7;
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(255, 56, 92, 0.35);
+    transform: translateY(-1px);
+  }
+
+  .nav-host-link:hover::before {
+    opacity: 1;
+  }
+
+  .nav-host-link:active {
+    transform: translateY(0) scale(0.97);
+  }
+
+  .nav-host-link svg,
+  .nav-host-link span {
+    position: relative;
+    z-index: 1;
   }
 
   .nav-host-link svg {
     width: 18px;
     height: 18px;
-    stroke-width: 2.5;
+    stroke-width: 2;
+    transition: all 0.25s ease;
   }
 
   /* ===== PROFILE AREA ===== */
@@ -203,7 +236,7 @@
 
   .nav-avatar:hover {
     transform: scale(1.06);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
   }
 
   a.nav-avatar {
@@ -235,7 +268,7 @@
 
   .menu-btn:hover {
     border-color: #bbb;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
   .menu-btn .bar-group {
@@ -265,7 +298,7 @@
     width: 240px;
     background: #fff;
     border-radius: 16px;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
     padding: 8px 0;
     display: none;
     z-index: 200;
@@ -274,11 +307,20 @@
   }
 
   @keyframes dropIn {
-    from { opacity: 0; transform: translateY(-8px) scale(0.96); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    from {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.96);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
   }
 
-  .profile-dropdown.show { display: block; }
+  .profile-dropdown.show {
+    display: block;
+  }
 
   .dropdown-item {
     display: block;
@@ -295,8 +337,13 @@
     transition: background 0.12s;
   }
 
-  .dropdown-item:hover { background: #F7F7F7; }
-  .dropdown-item.bold { font-weight: 600; }
+  .dropdown-item:hover {
+    background: #F7F7F7;
+  }
+
+  .dropdown-item.bold {
+    font-weight: 600;
+  }
 
   .dropdown-divider {
     height: 1px;
@@ -312,7 +359,7 @@
     left: 0;
     right: 0;
     z-index: 50;
-    background: rgba(255,255,255,0.98);
+    background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-top: 1px solid #EBEBEB;
@@ -343,7 +390,9 @@
     transition: transform 0.15s;
   }
 
-  .bottom-tab:active { transform: scale(0.92); }
+  .bottom-tab:active {
+    transform: scale(0.92);
+  }
 
   .bottom-tab svg {
     width: 24px;
@@ -377,7 +426,7 @@
     position: fixed;
     inset: 0;
     z-index: 90;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0, 0, 0, 0.4);
     opacity: 0;
     transition: opacity 0.25s ease;
   }
@@ -395,7 +444,7 @@
     z-index: 100;
     background: #fff;
     border-radius: 16px 16px 0 0;
-    box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
     padding: 12px 0 calc(16px + env(safe-area-inset-bottom, 0px));
     transform: translateY(100%);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -484,21 +533,43 @@
       height: 56px;
     }
 
-    .nav-logo span { font-size: 18px; }
-    .nav-logo img { height: 26px; }
+    .nav-logo span {
+      font-size: 18px;
+    }
 
-    .nav-tabs { display: none !important; }
-    .nav-right { display: none !important; }
+    .nav-logo img {
+      height: 26px;
+    }
 
-    .bottom-tabs { display: block; }
+    .nav-tabs {
+      display: none !important;
+    }
 
-    body { padding-bottom: 64px; }
+    .nav-right {
+      display: none !important;
+    }
+
+    .bottom-tabs {
+      display: block;
+    }
+
+    body {
+      padding-bottom: 64px;
+    }
   }
 
   @media (min-width: 769px) and (max-width: 1100px) {
-    .nav-container { padding: 0 24px; }
-    .nav-tab-link { padding: 0 16px; }
-    .nav-host-link { display: none; }
+    .nav-container {
+      padding: 0 24px;
+    }
+
+    .nav-tab-link {
+      padding: 0 16px;
+    }
+
+    .nav-host-link {
+      display: none;
+    }
   }
 </style>
 
@@ -513,96 +584,115 @@
 
     <!-- Center Tabs (truly centered via grid) -->
     <ul class="nav-tabs">
-      <% if (userType == 'host') { %>
-      <li>
-        <a href="/host/listings" class="nav-tab-link <%= url === '/host/listings' ? 'active' : '' %>">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-          </svg>
-          <span class="tab-text">Listings</span>
-        </a>
-      </li>
-      <% } else { %>
-      <li>
-        <a href="/" class="nav-tab-link <%= url === '/' ? 'active' : '' %>">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-          </svg>
-          <span class="tab-text">Explore</span>
-        </a>
-      </li>
-      <% if (isLoggedIn) { %>
-      <li>
-        <a href="/wishlists" class="nav-tab-link <%= url === '/wishlists' ? 'active' : '' %>">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-          </svg>
-          <span class="tab-text">Wishlists</span>
-        </a>
-      </li>
-      <li>
-        <a href="/bookings" class="nav-tab-link <%= url === '/bookings' ? 'active' : '' %>">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
-          </svg>
-          <span class="tab-text">Trips</span>
-        </a>
-      </li>
-      <% } %>
-      <% } %>
+      <% if (userType=='host' ) { %>
+        <li>
+          <a href="/host/listings" class="nav-tab-link <%= url === '/host/listings' ? 'active' : '' %>">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            <span class="tab-text">Listings</span>
+          </a>
+        </li>
+        <% } else { %>
+          <li>
+            <a href="/" class="nav-tab-link <%= url === '/' ? 'active' : '' %>">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+              <span class="tab-text">Explore</span>
+            </a>
+          </li>
+          <% if (isLoggedIn) { %>
+            <li>
+              <a href="/wishlists" class="nav-tab-link <%= url === '/wishlists' ? 'active' : '' %>">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+                <span class="tab-text">Wishlists</span>
+              </a>
+            </li>
+            <li>
+              <a href="/bookings" class="nav-tab-link <%= url === '/bookings' ? 'active' : '' %>">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                <span class="tab-text">Trips</span>
+              </a>
+            </li>
+            <% } %>
+              <% } %>
     </ul>
 
     <!-- Right Section -->
     <div class="nav-right">
       <% if (isLoggedIn) { %>
-        <% if(userType == 'host') {%>
+        <% if(userType=='host' ) {%>
           <form action="/change-user/<%= userId %>" method="POST">
-      <button class="nav-host-link">
-        Switch to travelling
-      </button>
-      </form>
-        <% } else { %>
-          <form action="/change-user/<%= userId %>" method="POST">
-      <button type="submit" class="nav-host-link">
-        Switch to hosting
-      </button>
-      </form>
-        <% } %>
-      <% } %>
-
-      <!-- Profile Area -->
-      <div class="profile-area">
-        <% if (isLoggedIn) { %>
-        <a href="/profile/<%= userId %>" class="nav-avatar" title="My Profile">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v2h20v-2c0-3.33-6.67-5-10-5z"/>
-          </svg>
-        </a>
-        <% } %>
-        <button class="menu-btn" id="profileBtn" aria-label="User menu">
-          <div class="bar-group">
-            <span></span><span></span><span></span>
-          </div>
-        </button>
-
-        <div class="profile-dropdown" id="profileDropdown">
-          <% if (isLoggedIn) { %>
-            <% if(userType == 'host') {%>
-            <a href="/host/add-home" class="dropdown-item">Add property</a>
-            <a href="/host/listings" class="dropdown-item">Manage listings</a>
-            <% } %>
-            <div class="dropdown-divider"></div>
-            <form method="POST" action="/logout" style="margin:0;">
-              <button type="submit" class="dropdown-item">Log out</button>
-            </form>
+            <button class="nav-host-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M2 12h20" />
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              </svg>
+              <span>Switch to travelling</span>
+            </button>
+          </form>
           <% } else { %>
-            <a href="/login" class="dropdown-item bold">Log in</a>
-            <a href="/signup" class="dropdown-item">Sign up</a>
-            <div class="dropdown-divider"></div>
-            <a href="/host/add-home" class="dropdown-item">Airbnb your home</a>
-          <% } %>
-        </div>
-      </div>
+            <form action="/change-user/<%= userId %>" method="POST">
+              <button type="submit" class="nav-host-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  <path d="M9 22V12h6v10" />
+                  <path d="M14.5 6.5l-2-2-2 2" />
+                  <line x1="12.5" y1="4.5" x2="12.5" y2="9" />
+                </svg>
+                <span>Switch to hosting</span>
+              </button>
+            </form>
+            <% } %>
+              <% } %>
+
+                <!-- Profile Area -->
+                <div class="profile-area">
+                  <% if (isLoggedIn) { %>
+                    <a href="/profile/<%= userId %>" class="nav-avatar" title="My Profile">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                          d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v2h20v-2c0-3.33-6.67-5-10-5z" />
+                      </svg>
+                    </a>
+                    <% } %>
+                      <button class="menu-btn" id="profileBtn" aria-label="User menu">
+                        <div class="bar-group">
+                          <span></span><span></span><span></span>
+                        </div>
+                      </button>
+
+                      <div class="profile-dropdown" id="profileDropdown">
+                        <% if (isLoggedIn) { %>
+                          <% if(userType=='host' ) {%>
+                            <a href="/host/add-home" class="dropdown-item">Add property</a>
+                            <a href="/host/listings" class="dropdown-item">Manage listings</a>
+                            <% } %>
+                              <div class="dropdown-divider"></div>
+                              <form method="POST" action="/logout" style="margin:0;">
+                                <button type="submit" class="dropdown-item">Log out</button>
+                              </form>
+                              <% } else { %>
+                                <a href="/login" class="dropdown-item bold">Log in</a>
+                                <a href="/signup" class="dropdown-item">Sign up</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="/host/add-home" class="dropdown-item">Airbnb your home</a>
+                                <% } %>
+                      </div>
+                </div>
     </div>
 
   </div>
@@ -612,42 +702,50 @@
 <nav class="bottom-tabs">
   <div class="bottom-tabs-inner">
 
-    <% if (userType == 'host') { %>
-    <a href="/host/listings" class="bottom-tab <%= url === '/host/listings' ? 'active' : '' %>">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-      </svg>
-      <span class="tab-label">Listings</span>
-    </a>
-    <% } else { %>
-    <a href="/" class="bottom-tab <%= url === '/' ? 'active' : '' %>">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-      </svg>
-      <span class="tab-label">Explore</span>
-    </a>
+    <% if (userType=='host' ) { %>
+      <a href="/host/listings" class="bottom-tab <%= url === '/host/listings' ? 'active' : '' %>">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+        <span class="tab-label">Listings</span>
+      </a>
+      <% } else { %>
+        <a href="/" class="bottom-tab <%= url === '/' ? 'active' : '' %>">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+          <span class="tab-label">Explore</span>
+        </a>
 
-    <a href="/wishlists" class="bottom-tab <%= url === '/wishlists' ? 'active' : '' %>">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-      </svg>
-      <span class="tab-label">Wishlists</span>
-    </a>
+        <a href="/wishlists" class="bottom-tab <%= url === '/wishlists' ? 'active' : '' %>">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path
+              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </svg>
+          <span class="tab-label">Wishlists</span>
+        </a>
 
-    <a href="/bookings" class="bottom-tab <%= url === '/bookings' ? 'active' : '' %>">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
-      </svg>
-      <span class="tab-label">Trips</span>
-    </a>
-    <% } %>
+        <a href="/bookings" class="bottom-tab <%= url === '/bookings' ? 'active' : '' %>">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          <span class="tab-label">Trips</span>
+        </a>
+        <% } %>
 
-    <button class="bottom-tab" id="mobileMenuBtn" type="button">
-      <div class="hamburger-icon">
-        <span></span><span></span><span></span>
-      </div>
-      <span class="tab-label">Menu</span>
-    </button>
+          <button class="bottom-tab" id="mobileMenuBtn" type="button">
+            <div class="hamburger-icon">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="tab-label">Menu</span>
+          </button>
 
   </div>
 </nav>
@@ -658,44 +756,82 @@
   <div class="menu-handle"></div>
   <% if (isLoggedIn) { %>
     <a href="/profile/<%= userId %>" class="menu-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
       </svg>
       Profile
     </a>
 
-    <% if(userType == 'host') {%>
-    <a href="/host/add-home" class="menu-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-      </svg>
-      Add property
-    </a>
-    <% } %>
-
-    <div class="menu-divider"></div>
-    <form method="POST" action="/logout" style="margin:0;">
-      <button type="submit" class="menu-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+    <% if(userType=='host' ) {%>
+      <form action="/change-user/<%= userId %>" method="POST" style="margin:0;">
+        <button type="submit" class="menu-item" style="color:#FF385C; font-weight:600;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FF385C" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M2 12h20" />
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+          </svg>
+          Switch to travelling
+        </button>
+      </form>
+      <a href="/host/add-home" class="menu-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
         </svg>
-        Log out
-      </button>
-    </form>
-  <% } else { %>
-    <a href="/login" class="menu-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>
-      </svg>
-      Log in
-    </a>
-    <a href="/signup" class="menu-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>
-      </svg>
-      Sign up
-    </a>
-  <% } %>
+        Add property
+      </a>
+      <% } else { %>
+        <form action="/change-user/<%= userId %>" method="POST" style="margin:0;">
+          <button type="submit" class="menu-item" style="color:#FF385C; font-weight:600;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#FF385C" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <path d="M9 22V12h6v10" />
+              <path d="M14.5 6.5l-2-2-2 2" />
+              <line x1="12.5" y1="4.5" x2="12.5" y2="9" />
+            </svg>
+            Switch to hosting
+          </button>
+        </form>
+        <% } %>
+
+          <div class="menu-divider"></div>
+          <form method="POST" action="/logout" style="margin:0;">
+            <button type="submit" class="menu-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+              Log out
+            </button>
+          </form>
+          <% } else { %>
+            <a href="/login" class="menu-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                <polyline points="10 17 15 12 10 7" />
+                <line x1="15" y1="12" x2="3" y2="12" />
+              </svg>
+              Log in
+            </a>
+            <a href="/signup" class="menu-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="8.5" cy="7" r="4" />
+                <line x1="20" y1="8" x2="20" y2="14" />
+                <line x1="23" y1="11" x2="17" y2="11" />
+              </svg>
+              Sign up
+            </a>
+            <% } %>
 </div>
 
 <script>
@@ -725,7 +861,7 @@
   });
 
   document.querySelectorAll('.nav-tab-link').forEach(link => {
-    link.addEventListener('click', function(e) {
+    link.addEventListener('click', function (e) {
       if (this.classList.contains('active')) e.preventDefault();
     });
   });

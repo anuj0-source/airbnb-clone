@@ -5,7 +5,7 @@ const User = require("../models/user.model");
 exports.getHome = async (req, res) => {
   try {
 
-    const homes = await Home.find().lean();
+    let homes = await Home.find().lean();
 
     // Mark homes that are in the user's wishlist
     let userFavourites = [];
@@ -13,6 +13,11 @@ exports.getHome = async (req, res) => {
       const user = await User.findById(req.session.userId).lean();
       if (user && user.favourites) {
         userFavourites = user.favourites.map(id => id.toString());
+
+        if (user.listings && user.listings.length > 0) {
+          const userListings = user.listings.map(id => id.toString());
+          homes = homes.filter(home => !userListings.includes(home._id.toString()));
+        }
       }
     }
 

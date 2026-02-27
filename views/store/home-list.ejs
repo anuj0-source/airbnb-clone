@@ -5,18 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%- include('../partials/favicon') %>
-    <link rel="stylesheet" href="/output.css">
-    <title>Home</title>
-    <style>
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-up {
-            opacity: 0;
-            animation: fadeUp 0.5s ease-out forwards;
-        }
-    </style>
+        <link rel="stylesheet" href="/output.css">
+        <title>Home</title>
+        <style>
+            @keyframes fadeUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .fade-up {
+                opacity: 0;
+                animation: fadeUp 0.5s ease-out forwards;
+            }
+        </style>
 </head>
 
 
@@ -24,56 +32,56 @@
 
     <%- include('../partials/nav-bar') %>
 
-    <!-- ✅ CENTER CONTAINER -->
-    <div class="max-w-7xl mx-auto px-6 py-6">
+        <!-- ✅ CENTER CONTAINER -->
+        <div class="max-w-7xl mx-auto px-6 py-6">
 
-        <div class="homes grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <div class="homes grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
 
-            <% if(homes && homes.length > 0){ %>
-                <% homes.forEach((home, index) => { %>
+                <% if(homes && homes.length> 0){ %>
+                    <% homes.forEach((home, index)=> { %>
 
-                    <!-- 🔥 CARD -->
-                    <div class="fade-up bg-white rounded-2xl overflow-hidden 
+                        <!-- 🔥 CARD -->
+                        <div class="fade-up bg-white rounded-2xl overflow-hidden 
                                 shadow-md hover:shadow-2xl 
                                 transition duration-300 transform hover:-translate-y-2 
                                 border border-gray-200 cursor-pointer group"
-                         style="animation-delay: <%= index * 0.08 %>s">
+                            style="animation-delay: <%= index * 0.08 %>s">
 
-                        <!-- Image -->
-                        <a href="/homes/<%= home._id %>">
-                            <div class="h-56 overflow-hidden relative">
-                                <img src="<%= home.imageUrl %>" loading="lazy"
-                                     class="w-full h-full object-cover transition duration-300 group-hover:scale-110"/>
-                                <!-- Save Button (top-right of image) -->
-                                <%- include("../partials/save-btn",{home:home}) %>
-                            </div>
-                        
-
-                        <!-- Content -->
-                        <div class="p-4">
+                            <!-- Image -->
+                            <a href="/homes/<%= home._id %>">
+                                <div class="h-56 overflow-hidden relative">
+                                    <img src="<%= home.imageUrl %>" loading="lazy"
+                                        class="w-full h-full object-cover transition duration-300 group-hover:scale-110" />
+                                    <!-- Save Button (top-right of image) -->
+                                    <%- include("../partials/save-btn",{home:home}) %>
+                                </div>
 
 
-                            <div class="flex justify-between items-center">
-                                <h3 class="text-gray-800 font-semibold text-md truncate">
-                                    <%= home.houseName %>
-                                </h3>
-                                <span class="text-sm flex items-center gap-1">⭐ 5.0</span>
-                            </div>
+                                <!-- Content -->
+                                <div class="p-4">
 
-                            <p class="text-gray-500 text-sm mt-1">
-                                <%= home.location %>
-                            </p>
 
-                            <p class="text-gray-400 text-sm mt-1 line-clamp-2">
-                                <%= home.homeDescription %>
-                            </p>
+                                    <div class="flex justify-between items-center">
+                                        <h3 class="text-gray-800 font-semibold text-md truncate">
+                                            <%= home.houseName %>
+                                        </h3>
+                                        <span class="text-sm flex items-center gap-1">⭐ 5.0</span>
+                                    </div>
 
-                            <p class="mt-2 text-gray-900 font-semibold">
-                                ₹<%= home.price %> 
-                                <span class="text-gray-500 font-normal">/ night</span>
-                            </p>
+                                    <p class="text-gray-500 text-sm mt-1">
+                                        <%= home.location %>
+                                    </p>
 
-                        </a>
+                                    <p class="text-gray-400 text-sm mt-1 line-clamp-2">
+                                        <%= home.homeDescription %>
+                                    </p>
+
+                                    <p class="mt-2 text-gray-900 font-semibold">
+                                        ₹<%= home.price %>
+                                            <span class="text-gray-500 font-normal">/ night</span>
+                                    </p>
+
+                            </a>
 
                             <!-- ✅ Button -->
                             <div class="mt-3">
@@ -88,30 +96,98 @@
 
                         </div>
 
+            </div>
+
+            <% }) %>
+                <% } else { %>
+
+                    <div class="col-span-full flex flex-col items-center justify-center py-20 px-4 fade-up">
+                        <!-- Illustration -->
+                        <svg width="160" height="160" viewBox="0 0 200 200" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" class="mb-8 opacity-80">
+                            <!-- Ground shadow -->
+                            <ellipse cx="100" cy="175" rx="70" ry="8" fill="#F0F0F0" />
+                            <!-- House body -->
+                            <rect x="55" y="90" width="90" height="85" rx="6" fill="#FFF" stroke="#DDDDDD"
+                                stroke-width="2" />
+                            <!-- Roof -->
+                            <path d="M40 95L100 45L160 95" stroke="#FF385C" stroke-width="3.5" stroke-linecap="round"
+                                stroke-linejoin="round" fill="none" />
+                            <path d="M50 95L100 52L150 95" fill="#FFF0F2" />
+                            <!-- Door -->
+                            <rect x="88" y="130" width="24" height="45" rx="4" fill="#FF385C" opacity="0.15"
+                                stroke="#FF385C" stroke-width="1.5" />
+                            <circle cx="106" cy="155" r="2.5" fill="#FF385C" />
+                            <!-- Window left -->
+                            <rect x="65" y="105" width="20" height="20" rx="3" fill="#F0F7FF" stroke="#DDDDDD"
+                                stroke-width="1.5" />
+                            <line x1="75" y1="105" x2="75" y2="125" stroke="#DDDDDD" stroke-width="1" />
+                            <line x1="65" y1="115" x2="85" y2="115" stroke="#DDDDDD" stroke-width="1" />
+                            <!-- Window right -->
+                            <rect x="115" y="105" width="20" height="20" rx="3" fill="#F0F7FF" stroke="#DDDDDD"
+                                stroke-width="1.5" />
+                            <line x1="125" y1="105" x2="125" y2="125" stroke="#DDDDDD" stroke-width="1" />
+                            <line x1="115" y1="115" x2="135" y2="115" stroke="#DDDDDD" stroke-width="1" />
+                            <!-- Chimney -->
+                            <rect x="125" y="55" width="14" height="30" rx="2" fill="#FFF" stroke="#DDDDDD"
+                                stroke-width="1.5" />
+                            <!-- Smoke puffs -->
+                            <circle cx="132" cy="48" r="4" fill="#F0F0F0" opacity="0.7">
+                                <animate attributeName="cy" values="48;40;48" dur="3s" repeatCount="indefinite" />
+                                <animate attributeName="opacity" values="0.7;0.3;0.7" dur="3s"
+                                    repeatCount="indefinite" />
+                            </circle>
+                            <circle cx="138" cy="38" r="5" fill="#F0F0F0" opacity="0.5">
+                                <animate attributeName="cy" values="38;28;38" dur="3.5s" repeatCount="indefinite" />
+                                <animate attributeName="opacity" values="0.5;0.2;0.5" dur="3.5s"
+                                    repeatCount="indefinite" />
+                            </circle>
+                            <!-- Small heart -->
+                            <g transform="translate(100,72) scale(0.5)" opacity="0.6">
+                                <path
+                                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                                    fill="#FF385C" />
+                            </g>
+                        </svg>
+
+                        <!-- Text content -->
+                        <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-3 tracking-tight text-center">
+                            No places to stay — yet!
+                        </h2>
+                        <p class="text-gray-500 text-base sm:text-lg max-w-md text-center leading-relaxed mb-8">
+                            Looks like there are no listings available right now. Check back soon or become a host and
+                            list your own place!
+                        </p>
+
+                        <!-- CTA Button -->
+                        <a href="/host/add-home" style="background-color: #D70466;" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-white font-semibold text-base
+                              shadow-md hover:shadow-lg
+                              transition-all duration-300 active:scale-95 transform hover:-translate-y-0.5">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                <path d="M9 22V12h6v10" />
+                            </svg>
+                            Become a Host
+                        </a>
                     </div>
 
-                <% }) %>
-            <% } else { %>
-
-                <p class="text-slate-500 col-span-full text-center py-10">
-                    No homes available at the moment.
-                </p>
-
-            <% } %>
+                    <% } %>
 
         </div>
 
-    </div>
-
-    
-    <%- include("../partials/footer") %>
+        </div>
 
 
-    <%- include('../partials/wishlist-toast') %>
+        <%- include("../partials/footer") %>
 
-    <%- include("../partials/save-script") %>
 
-    <%- include('../partials/nav-script') %>
+            <%- include('../partials/wishlist-toast') %>
+
+                <%- include("../partials/save-script") %>
+
+                    <%- include('../partials/nav-script') %>
 
 </body>
+
 </html>
