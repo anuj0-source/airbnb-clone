@@ -13,11 +13,10 @@ const PORT = 3000;
 const { userRouter } = require("./routes/user.route");
 const { hostRouter } = require("./routes/host.route");
 const authRouter = require("./routes/auth.route");
-const isAuth=require("./middlewares/isAuth");
-
+const isAuth = require("./middlewares/isAuth");
+const changeToHost = require("./middlewares/toHosting");
 
 const errorController = require("./controllers/errors.controller");
-
 
 const app = express();
 
@@ -51,13 +50,28 @@ app.use(session({
 app.use((req, res, next) => {
     res.locals.url = req.path;
 
-    res.locals.isLoggedIn = req.session.isLoggedIn;
+    res.locals.isLoggedIn = req.session.isLoggedIn || false;
+    res.locals.userId = null;
+    res.locals.userType = null;
+
+    if (req.session.isLoggedIn) {
+        res.locals.userId = req.session.userId;
+        res.locals.userType = req.session.userType;
+    }
+
+
+    // Flash toast message (read once, then clear)
+    if (req.session.toast) {
+        res.locals.toastMsg = req.session.toast.msg;
+        res.locals.toastType = req.session.toast.type || 'success';
+        delete req.session.toast;
+    }
 
     next();
 });
 
 app.use(authRouter);
-app.use("/host", isAuth,hostRouter);
+app.use("/host", isAuth, changeToHost, hostRouter);
 app.use("/", userRouter);
 
 app.use(errorController.pageNotFound);

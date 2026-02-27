@@ -19,7 +19,13 @@ function saveToWishlist(btn) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id })
     })
-    .then(res => res.json())
+    .then(res => {
+        if (res.status === 401) {
+            window.location.href = '/login';
+            throw new Error('Please login first');
+        }
+        return res.json();
+    })
     .then(data => {
 
         // 🎨 UI update (based on isFav, NOT svg)
@@ -39,9 +45,9 @@ function saveToWishlist(btn) {
             showToast(data.message || (isFav ? 'Saved to wishlist ❤️' : 'Removed from wishlist 🗑️'));
         }
     })
-    .catch(() => {
+    .catch((err) => {
         if (typeof showToast === 'function') {
-            showToast('Something went wrong');
+            showToast(err.message);
         }
     });
 

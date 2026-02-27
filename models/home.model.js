@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Fav = require("./favourite.model");
+const User = require("./user.model");
 
 const homeSchema=new mongoose.Schema({
 
@@ -31,11 +31,6 @@ const homeSchema=new mongoose.Schema({
   homeDescription:{
     type:String,
     required:false
-  },
-  
-  favourite:{
-    type:Boolean,
-    required:true
   }
 
 });
@@ -44,7 +39,10 @@ homeSchema.pre('findOneAndDelete', async function () {
   try {
     const homeId = this.getQuery()._id;
 
-    await Fav.deleteMany({ homeId: homeId });
+    await User.updateMany(
+      {favourites:homeId},
+      {$pull:{favourites:homeId}}
+    );
 
   } catch (err) {
     console.log("Error while pre:", err);

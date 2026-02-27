@@ -1,23 +1,34 @@
-const Fav = require("../models/favourite.model");
 const Home = require("../models/home.model");
+const User = require("../models/user.model");
+
 
 exports.addHomeGet = (req, res) => {
   res.render("./host/edit-home", { edit: false });
 };
 
 exports.addHomePost = async (req, res) => {
+  const userId=req.params.userId;
   const { "house-name": houseName, size, location, price, "image": imageUrl, "description": homeDescription } = req.body;
-  let favourite = false;
 
-  const home = new Home({ houseName, size, location, price, imageUrl, homeDescription, favourite });
+  const home = new Home({ houseName, size, location, price, imageUrl, homeDescription});
   await home.save();
-
+  const user=await User.findById(userId);
+  user.listings.push(home._id);
+  await user.save();
   res.render("./host/add-home-response");
 };
 
 exports.getListing = async (req, res) => {
   try {
-    const homes = await Home.find().lean();
+    const userId=req.session.userId;
+
+    const user=await User.findById(userId);
+
+    const listedHomes=user.listings;
+
+    const homes=await Home.find({
+          _id: { $in: listedHomes }
+        }).lean();
 
     res.render("./host/host-home-list", { homes: homes });
   }
@@ -49,7 +60,6 @@ exports.postEditHome = async (req, res) => {
     const { "house-name": houseName, size, location, price, "image": imageUrl, "description": homeDescription } = req.body;
 
     const id = req.params.id;
-    const reqHome = await Home.findById(id);
 
     await Home.findByIdAndUpdate(id, {
       houseName,
@@ -57,8 +67,7 @@ exports.postEditHome = async (req, res) => {
       location,
       price,
       imageUrl,
-      homeDescription,
-      favourite: reqHome.favourite
+      homeDescription
     });
 
     res.redirect("/host/listings?toast=Property updated successfully ✅");
@@ -75,6 +84,12 @@ exports.deleteHome = async (req, res) => {
   try {
 
     const homeId = req.params.id;
+    const userId=req.session.userId;
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { listings: homeId } }
+    );
 
     await Home.findByIdAndDelete(homeId);
 

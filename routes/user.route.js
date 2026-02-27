@@ -1,20 +1,23 @@
-const express=require("express");
-const userController=require("../controllers/user.controller");
-const isAuth=require("../middlewares/isAuth");
+const express = require("express");
+const userController = require("../controllers/user.controller");
+const isAuth = require("../middlewares/isAuth");
+const changeToTravelling = require("../middlewares/toTravelling");
 
 
-const userRouter=express.Router();
+const userRouter = express.Router();
 
-userRouter.get("/",userController.getHome);
+userRouter.get("/",changeToTravelling, userController.getHome);
 
-userRouter.get("/bookings",isAuth,userController.bookings);
+userRouter.get("/bookings", isAuth,changeToTravelling, userController.bookings);
 
-userRouter.get("/wishlists",isAuth,userController.favouriteHomes);
+userRouter.get("/wishlists", isAuth, changeToTravelling, userController.favouriteHomes);
 
-userRouter.get("/homes/:id",isAuth,userController.getDetails);
+userRouter.get("/homes/:id", changeToTravelling, userController.getDetails);
 
-userRouter.post("/wishlists",isAuth,userController.addToWishlist);
+userRouter.post("/wishlists", isAuth, userController.addToWishlist);
 
-userRouter.delete("/wishlists",isAuth,userController.removeFromWishlist);
+userRouter.delete("/wishlists", isAuth, userController.removeFromWishlist);
 
-module.exports={userRouter};
+userRouter.post("/change-user/:userId", userController.postChangeUserType);
+
+module.exports = { userRouter };

@@ -1,37 +1,45 @@
 const { body, validationResult, check } = require("express-validator");
-const User=require("../models/user.model");
-const bcrypt=require("bcrypt");
+const User = require("../models/user.model");
+const bcrypt = require("bcrypt");
 
 exports.getLogin = (req, res) => {
-    res.render("./store/login-page",{check:false,notexist:false,wrongPass:false});
+    res.render("./store/login-page", { check: false, notexist: false, wrongPass: false });
 };
 
 exports.postLogin = async (req, res) => {
 
     try {
-        const {email,password}=req.body;
+        const { email, password } = req.body;
 
-        const logUser=await User.findOne({email});
+        const logUser = await User.findOne({ email });
 
-        if(!logUser){
-            return res.render("./store/login-page",{check:true,notexist:true,wrongPass:false});
+        if (!logUser) {
+            return res.status(422).render("./store/login-page", { check: true, notexist: true, wrongPass: false, oldValues: { email } });
         }
 
-        const savedPassword=logUser.password;
+        const savedPassword = logUser.password;
 
-        const isCorrect=await bcrypt.compare(password,savedPassword);
+        const isCorrect = await bcrypt.compare(password, savedPassword);
 
-        if(!isCorrect){
-            return res.render("./store/login-page",{check:true,notexist:false,wrongPass:true});
+        if (!isCorrect) {
+            return res.render("./store/login-page", { check: true, notexist: false, wrongPass: true, oldValues: { email } });
         }
 
         req.session.isLoggedIn = true;
+        req.session.userId = String(logUser._id);
+        req.session.userType = logUser.userType;
+        req.session.toast = { msg: 'Logged in successfully ✅', type: 'success' };
 
-        res.redirect('/');
+        req.session.save(() => {
+            if (req.session.userType == 'host') return res.redirect('/host/listings');
+
+            else return res.redirect('/');
+        })
+        
     }
-    catch(err){
-        console.log("Error wile logging",err);
-        res.redirect("/login",{check:false});
+    catch (err) {
+        console.log("Error wile logging", err);
+        res.redirect("/login", { check: false });
     }
 };
 
@@ -42,7 +50,7 @@ exports.postLogout = (req, res) => {
 };
 
 exports.getSignUp = (req, res) => {
-    res.render("./store/signup-page", { validationFail: false, errorMsg: [], fieldErrors: {} ,isExist:false});
+    res.render("./store/signup-page", { validationFail: false, errorMsg: [], fieldErrors: {}, isExist: false });
 };
 
 exports.postSignUp = [
@@ -110,33 +118,37 @@ exports.postSignUp = [
                         confirmPassword,
                         userType
                     },
-                    isExist:false
+                    isExist: false
                 });
             }
 
-            const isExist=await User.exists({email});
+            const isExist = await User.exists({ email });
 
-            if(isExist){
-                return res.render("./store/signup-page",{validationFail: false, errorMsg: [], fieldErrors: {} ,oldValues: {
+            if (isExist) {
+                return res.render("./store/signup-page", {
+                    validationFail: false, errorMsg: [], fieldErrors: {}, oldValues: {
                         firstName,
                         lastName,
                         email,
                         password,
                         confirmPassword,
                         userType
-                    },isExist:true});
+                    }, isExist: true
+                });
             }
 
-            bcrypt.hash(password, 10).then((hashedPassword) => {
-                const user = new User({ firstName, lastName, email, password: hashedPassword, userType });
-                user.save().then(() => {
+            const hashedPassword = await bcrypt.hash(password, 10);
 
-                    res.redirect("/login");
-                });
-            }).catch(err => err)
+            const user = new User({ firstName, lastName, email, password: hashedPassword, userType });
+
+            await user.save()
+
+            req.session.toast = { msg: 'Account created successfully! Please log in ✅', type: 'success' };
+            res.redirect("/login");
+
         }
-        catch(err){
-            console.log("Error while signup",err);
+        catch (err) {
+            console.log("Error while signup", err);
             res.redirect("/signup");
         }
     }

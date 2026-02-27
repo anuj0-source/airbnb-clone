@@ -15,9 +15,16 @@
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #FFF5F7 0%, #FFF 40%, #FFF5F7 100%);
+        }
+
+        .page-content {
+            flex: 1;
+            display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #FFF5F7 0%, #FFF 40%, #FFF5F7 100%);
+            padding: 24px 16px;
         }
 
         .signup-card {
@@ -408,7 +415,8 @@
     </style>
 </head>
 <body>
-
+    <%- include('../partials/nav-bar') %>
+    <div class="page-content">
     <div class="signup-card">
 
         <!-- Header -->
@@ -566,5 +574,6 @@
         });
     </script>
 
+    </div>
 </body>
 </html>

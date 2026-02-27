@@ -21,6 +21,15 @@ const userSchema=new mongoose.Schema({
     userType:{
         default:'guest',
         type:String
+    },
+    favourites:{
+        type:[mongoose.Schema.Types.ObjectId],
+        ref:"Home",
+        default:[]
+    },
+    listings:{
+        type:[mongoose.Schema.Types.ObjectId],
+        ref:"Home"
     }
 });
 

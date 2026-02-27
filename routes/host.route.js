@@ -4,7 +4,7 @@ const hostController=require("../controllers/host.controller");
 
 hostRouter.get("/add-home",hostController.addHomeGet);
 
-hostRouter.post("/add-home",hostController.addHomePost);
+hostRouter.post("/add-home/:userId",hostController.addHomePost);
 
 hostRouter.get("/listings",hostController.getListing);
 
