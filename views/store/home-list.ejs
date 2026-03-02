@@ -50,7 +50,7 @@
                             <!-- Image -->
                             <a href="/homes/<%= home._id %>">
                                 <div class="h-56 overflow-hidden relative">
-                                    <img src="<%= home.imageUrl %>" loading="lazy"
+                                    <img src="<%= home.homeImages[0] %>" loading="lazy"
                                         class="w-full h-full object-cover transition duration-300 group-hover:scale-110" />
                                     <!-- Save Button (top-right of image) -->
                                     <%- include("../partials/save-btn",{home:home}) %>

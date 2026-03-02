@@ -5,66 +5,132 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%- include('../partials/favicon') %>
-  <title>Add Home</title>
-  <link rel="stylesheet" href="/output.css">
+    <title>Add Home</title>
+    <link rel="stylesheet" href="/output.css">
 </head>
 
 
 <body class="bg-gradient-to-tr from-[#FFFAF0] via-[#FFF5F5] to-[#F0F4FF] min-h-screen">
   <%- include("../partials/nav-bar") %>
 
-  <div class="max-w-2xl mx-auto mt-12 bg-white/90 p-10 rounded-3xl shadow-2xl border border-gray-200">
-    <div class="flex flex-col items-center mb-8">
-      <div class="mb-2">
-        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="24" cy="24" r="23" stroke="#FF5A5F" stroke-width="2" fill="#FFF" />
-          <path d="M24 12v24M12 24h24" stroke="#FF5A5F" stroke-width="2" stroke-linecap="round" />
-        </svg>
+    <div class="max-w-2xl mx-auto mt-12 bg-white/90 p-10 rounded-3xl shadow-2xl border border-gray-200">
+      <div class="flex flex-col items-center mb-8">
+        <div class="mb-2">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="24" r="23" stroke="#FF5A5F" stroke-width="2" fill="#FFF" />
+            <path d="M24 12v24M12 24h24" stroke="#FF5A5F" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </div>
+        <h2 class="text-3xl font-extrabold text-[#FF5A5F] tracking-tight mb-1">
+          <%= edit ? "Edit" : "Add" %> Your Property
+        </h2>
+        <p class="text-gray-500 text-lg">Showcase your space to millions of guests</p>
       </div>
-      <h2 class="text-3xl font-extrabold text-[#FF5A5F] tracking-tight mb-1">
-        <%= edit ? "Edit" : "Add" %> Your Property
-      </h2>
-      <p class="text-gray-500 text-lg">Showcase your space to millions of guests</p>
-    </div>
 
-    <% if (edit && home.imageUrl) { %>
-      <div class="mb-6 flex justify-center">
-        <img src="<%= home.imageUrl %>" alt="Property image" class="rounded-xl shadow-lg w-72 h-48 object-cover border border-gray-200">
-      </div>
-    <% } %>
+      <% if (edit && home.imageUrl) { %>
+        <div class="mb-6 flex justify-center">
+          <img src="<%= home.imageUrl %>" alt="Property image"
+            class="rounded-xl shadow-lg w-72 h-48 object-cover border border-gray-200">
+        </div>
+        <% } %>
 
-    <form method="POST" action="<%= edit? `/host/edit-home/${home._id}` : `/host/add-home/${userId}` %>" class="space-y-6">
-      <div>
-        <label class="block text-gray-700 font-semibold mb-2">House Name</label>
-        <input type="text" name="house-name" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF5A5F] text-lg" placeholder="Enter your house name" value="<%= edit ? home.houseName : '' %>" required>
-      </div>
-      <div>
-        <label class="block text-gray-700 font-semibold mb-2">Size (BHK)</label>
-        <input type="text" name="size" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF5A5F] text-lg" placeholder="e.g. 2 BHK" value="<%= edit? home.size : '' %>" required>
-      </div>
-      <div>
-        <label class="block text-gray-700 font-semibold mb-2">Location</label>
-        <input type="text" name="location" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF5A5F] text-lg" placeholder="Enter location" value="<%= edit? home.location : '' %>">
-      </div>
-      <div>
-        <label class="block text-gray-700 font-semibold mb-2">Price (₹/night)</label>
-        <input type="number" name="price" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF5A5F] text-lg" placeholder="Enter price" value="<%= edit? home.price : '' %>">
-      </div>
-      <div>
-        <label class="block text-gray-700 font-semibold mb-2">Image URL</label>
-        <input type="url" name="image" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF5A5F] text-lg" placeholder="Enter image URL" value="<%= edit? home.imageUrl : '' %>">
-      </div>
-      <div>
-        <label class="block text-gray-700 font-semibold mb-2">Description</label>
-        <textarea name="description" rows="3" class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF5A5F] text-lg" placeholder="Enter description"><%= edit? home.homeDescription : '' %></textarea>
-      </div>
-      <button class="w-full h-12 rounded-xl bg-[#FF5A5F] text-white text-lg font-bold shadow-lg transition-all duration-300 hover:bg-[#e04848] hover:scale-105 focus:ring-2 focus:ring-[#FF5A5F] focus:ring-offset-2">
-        <%= edit? "Update" : "Add" %> home
-      </button>
-    </form>
-    <div class="mt-8 text-center text-gray-400 text-sm">
-      <span>Need help? <a href="https://www.airbnb.com/help" class="text-[#FF5A5F] underline">See hosting tips</a></span>
+          <form method="POST" action="<%= edit? `/host/edit-home/${home._id}` : `/host/add-home/${userId}` %>"
+            class="space-y-6" enctype="multipart/form-data">
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">House Name</label>
+              <input type="text" name="house-name"
+                class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF5A5F] text-lg"
+                placeholder="Enter your house name" value="<%= edit ? home.houseName : '' %>" required>
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">Size (BHK)</label>
+              <input type="text" name="size"
+                class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF5A5F] text-lg"
+                placeholder="e.g. 2 BHK" value="<%= edit? home.size : '' %>" required>
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">Location</label>
+              <input type="text" name="location"
+                class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF5A5F] text-lg"
+                placeholder="Enter location" value="<%= edit? home.location : '' %>">
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">Price (₹/night)</label>
+              <input type="number" name="price"
+                class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF5A5F] text-lg"
+                placeholder="Enter price" value="<%= edit? home.price : '' %>">
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">Upload images of house (max 5)</label>
+              <input type="file" name="images" id="images"
+                class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF5A5F] text-lg"
+                accept="image/jpeg,image/png,image/jpg" multiple required>
+              <div id="preview" class="flex flex-wrap gap-3 mt-3"></div>
+            </div>
+            <div>
+              <label class="block text-gray-700 font-semibold mb-2">Description</label>
+              <textarea name="description" rows="3"
+                class="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#FF5A5F] text-lg"
+                placeholder="Enter description"><%= edit? home.homeDescription : '' %></textarea>
+            </div>
+            <button
+              class="w-full h-12 rounded-xl bg-[#FF5A5F] text-white text-lg font-bold shadow-lg transition-all duration-300 hover:bg-[#e04848] hover:scale-105 focus:ring-2 focus:ring-[#FF5A5F] focus:ring-offset-2">
+              <%= edit? "Update" : "Add" %> home
+            </button>
+          </form>
+          <div class="mt-8 text-center text-gray-400 text-sm">
+            <span>Need help? <a href="https://www.airbnb.com/help" class="text-[#FF5A5F] underline">See hosting
+                tips</a></span>
+          </div>
     </div>
-  </div>
+    <script>
+      const input = document.getElementById("images");
+      const preview = document.getElementById("preview");
+
+      let filesArr = [];
+
+      input.addEventListener("change", (e) => {
+        // Append new files instead of replacing
+        const newFiles = Array.from(e.target.files);
+        filesArr = [...filesArr, ...newFiles];
+        syncFilesToInput();
+        renderPreview();
+      });
+
+      function syncFilesToInput() {
+        const dt = new DataTransfer();
+        filesArr.forEach(file => dt.items.add(file));
+        input.files = dt.files;
+      }
+
+      function renderPreview() {
+        preview.innerHTML = "";
+
+        filesArr.forEach((file, index) => {
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+            const div = document.createElement("div");
+            div.style.cssText = "position:relative; display:inline-block;";
+
+            div.innerHTML = `
+            <img src="${e.target.result}" style="width:100px; height:100px; object-fit:cover; border-radius:12px; border:1px solid #ddd;">
+            <button onclick="removeImage(${index})" style="position:absolute; top:-6px; right:-6px; background:#FF385C; color:white; border:none; border-radius:50%; width:22px; height:22px; font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; line-height:1;">✕</button>
+          `;
+
+            preview.appendChild(div);
+          };
+
+          reader.readAsDataURL(file);
+        });
+      }
+
+      function removeImage(index) {
+        filesArr.splice(index, 1);
+        syncFilesToInput();
+        renderPreview();
+      }
+    </script>
 </body>
+
 </html>

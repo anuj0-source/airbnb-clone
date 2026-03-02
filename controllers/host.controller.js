@@ -7,28 +7,31 @@ exports.addHomeGet = (req, res) => {
 };
 
 exports.addHomePost = async (req, res) => {
-  const userId=req.params.userId;
-  const { "house-name": houseName, size, location, price, "image": imageUrl, "description": homeDescription } = req.body;
+  const userId = req.params.userId;
+  const homeImages = req.files.map(file => '/' + file.path.replace(/\\/g, '/').replace('public/', ''));
 
-  const home = new Home({ houseName, size, location, price, imageUrl, homeDescription});
+  const { "house-name": houseName, size, location, price, "description": homeDescription } = req.body;
+  const home = new Home({ houseName, size, location, price, homeImages, homeDescription });
   await home.save();
-  const user=await User.findById(userId);
+  const user = await User.findById(userId);
   user.listings.push(home._id);
   await user.save();
   res.render("./host/add-home-response");
 };
 
+
+
 exports.getListing = async (req, res) => {
   try {
-    const userId=req.session.userId;
+    const userId = req.session.userId;
 
-    const user=await User.findById(userId);
+    const user = await User.findById(userId);
 
-    const listedHomes=user.listings;
+    const listedHomes = user.listings;
 
-    const homes=await Home.find({
-          _id: { $in: listedHomes }
-        }).lean();
+    const homes = await Home.find({
+      _id: { $in: listedHomes }
+    }).lean();
 
     res.render("./host/host-home-list", { homes: homes });
   }
@@ -56,8 +59,7 @@ exports.getEditHome = async (req, res) => {
 
 exports.postEditHome = async (req, res) => {
   try {
-
-    const { "house-name": houseName, size, location, price, "image": imageUrl, "description": homeDescription } = req.body;
+    const { "house-name": houseName, size, location, price, "description": homeDescription } = req.body;
 
     const id = req.params.id;
 
@@ -66,7 +68,6 @@ exports.postEditHome = async (req, res) => {
       size,
       location,
       price,
-      imageUrl,
       homeDescription
     });
 
@@ -84,7 +85,7 @@ exports.deleteHome = async (req, res) => {
   try {
 
     const homeId = req.params.id;
-    const userId=req.session.userId;
+    const userId = req.session.userId;
 
     const user = await User.findByIdAndUpdate(
       userId,
