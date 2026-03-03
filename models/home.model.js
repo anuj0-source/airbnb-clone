@@ -29,6 +29,10 @@ const homeSchema = new mongoose.Schema({
   homeDescription: {
     type: String,
     required: false
+  },
+  hostId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
   }
 
 });

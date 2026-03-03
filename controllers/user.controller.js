@@ -74,7 +74,7 @@ exports.favouriteHomes = async (req, res) => {
 exports.getDetails = async (req, res) => {
   try {
     const id = req.params.id;
-    const home = await Home.findById(id).lean();
+    const home = await Home.findById(id).populate('hostId').lean();
 
     if (!home) return res.status(404).send("Home not found");
 

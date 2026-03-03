@@ -11,7 +11,7 @@ exports.addHomePost = async (req, res) => {
   const homeImages = req.files.map(file => file.path);
 
   const { "house-name": houseName, size, location, price, "description": homeDescription } = req.body;
-  const home = new Home({ houseName, size, location, price, homeImages, homeDescription });
+  const home = new Home({ houseName, size, location, price, homeImages, homeDescription, hostId: userId });
   await home.save();
   const user = await User.findById(userId);
   user.listings.push(home._id);
