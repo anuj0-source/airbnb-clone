@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const MONGO_URL = "mongodb+srv://anuj6202188:anujdb@cluster0.fnmyvge.mongodb.net/airbnb?retryWrites=true&w=majority";
+const MONGO_URL = process.env.MONGO_URI;
 
 async function dbConnect() {
     try {

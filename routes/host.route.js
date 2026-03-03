@@ -1,30 +1,22 @@
 const express = require("express");
 const multer = require("multer");
+const {CloudinaryStorage} = require("multer-storage-cloudinary");
 const path = require("path");
 const hostRouter = express.Router();
 const hostController = require("../controllers/host.controller");
+const cloudinary = require("../utils/cloudinaryConfig");
 
 // Multer config for home images
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "public/uploads");
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + "-" + Math.round(Math.random() * 1E9) + path.extname(file.originalname));
+const storage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+        folder: "airbnb/homes",
+        allowed_formats: ["jpg", "jpeg", "png"],
+        transformation: [{ width: 800, height: 600, crop: "fill" }]
     }
 });
 
-const uploadHomeImages = multer({
-    storage,
-    fileFilter: (req, file, cb) => {
-        const allowed = ["image/jpeg", "image/png", "image/jpg"];
-        if (allowed.includes(file.mimetype)) {
-            cb(null, true);
-        } else {
-            cb(new Error("Invalid file type"), false);
-        }
-    }
-});
+const uploadHomeImages = multer({storage});
 
 hostRouter.get("/add-home", hostController.addHomeGet);
 

@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('../partials/favicon') %>
+        <title>Edit Profile – Airbnb</title>
+        <link rel="stylesheet" href="/output.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet">
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+                background: #F7F7F7;
+                color: #222;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* ===== ANIMATIONS ===== */
+            @keyframes fadeUp {
+                from { opacity: 0; transform: translateY(24px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            @keyframes scaleIn {
+                from { opacity: 0; transform: scale(0.92); }
+                to { opacity: 1; transform: scale(1); }
+            }
+
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            @keyframes shimmer {
+                0% { background-position: -200% 0; }
+                100% { background-position: 200% 0; }
+            }
+
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+
+            @keyframes checkPop {
+                0% { transform: scale(0); opacity: 0; }
+                50% { transform: scale(1.2); }
+                100% { transform: scale(1); opacity: 1; }
+            }
+
+            .anim-fade-up {
+                opacity: 0;
+                animation: fadeUp 0.6s ease-out forwards;
+            }
+
+            .anim-scale-in {
+                opacity: 0;
+                animation: scaleIn 0.5s ease-out forwards;
+            }
+
+            /* ===== PAGE LAYOUT ===== */
+            .edit-page {
+                max-width: 840px;
+                margin: 0 auto;
+                padding: 40px 24px 100px;
+                width: 100%;
+            }
+
+            /* ===== BREADCRUMB ===== */
+            .breadcrumb {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 32px;
+                font-size: 14px;
+                color: #717171;
+            }
+
+            .breadcrumb a {
+                color: #222;
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.2s;
+            }
+
+            .breadcrumb a:hover {
+                color: #FF385C;
+            }
+
+            .breadcrumb svg {
+                width: 16px;
+                height: 16px;
+                color: #B0B0B0;
+            }
+
+            /* ===== PAGE HEADER ===== */
+            .page-header {
+                margin-bottom: 36px;
+            }
+
+            .page-header h1 {
+                font-size: 32px;
+                font-weight: 800;
+                color: #222;
+                letter-spacing: -0.5px;
+                margin-bottom: 8px;
+            }
+
+            .page-header p {
+                font-size: 16px;
+                color: #717171;
+                line-height: 1.5;
+            }
+
+            /* ===== FORM LAYOUT ===== */
+            .edit-form {
+                display: flex;
+                flex-direction: column;
+                gap: 32px;
+            }
+
+            /* ===== SECTION CARD ===== */
+            .form-section {
+                background: #fff;
+                border-radius: 20px;
+                border: 1px solid #EBEBEB;
+                padding: 32px;
+                box-shadow: 0 1px 8px rgba(0, 0, 0, 0.03);
+                transition: box-shadow 0.3s ease;
+            }
+
+            .form-section:hover {
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            }
+
+            .section-header {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                margin-bottom: 28px;
+                padding-bottom: 20px;
+                border-bottom: 1px solid #F0F0F0;
+            }
+
+            .section-icon {
+                width: 48px;
+                height: 48px;
+                border-radius: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+
+            .section-icon.photo {
+                background: linear-gradient(135deg, #FFF0F3, #FFE4EA);
+            }
+
+            .section-icon.personal {
+                background: linear-gradient(135deg, #E8EAF6, #C5CAE9);
+            }
+
+            .section-icon.security {
+                background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+            }
+
+            .section-icon svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .section-header-text h2 {
+                font-size: 20px;
+                font-weight: 700;
+                color: #222;
+                margin-bottom: 2px;
+            }
+
+            .section-header-text p {
+                font-size: 14px;
+                color: #717171;
+            }
+
+            /* ===== AVATAR UPLOAD ===== */
+            .avatar-upload-area {
+                display: flex;
+                align-items: center;
+                gap: 28px;
+            }
+
+            .avatar-preview-wrapper {
+                position: relative;
+                width: 120px;
+                height: 120px;
+                flex-shrink: 0;
+            }
+
+            .avatar-preview {
+                width: 120px;
+                height: 120px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 4px solid #fff;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .avatar-preview:hover {
+                transform: scale(1.05);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
+            }
+
+            .avatar-overlay {
+                position: absolute;
+                inset: 0;
+                border-radius: 50%;
+                background: rgba(0, 0, 0, 0.4);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: opacity 0.25s ease;
+                cursor: pointer;
+                border: 4px solid transparent;
+            }
+
+            .avatar-preview-wrapper:hover .avatar-overlay {
+                opacity: 1;
+            }
+
+            .avatar-overlay svg {
+                width: 28px;
+                height: 28px;
+                color: #fff;
+            }
+
+            .avatar-actions {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .avatar-actions h3 {
+                font-size: 16px;
+                font-weight: 600;
+                color: #222;
+                margin-bottom: 2px;
+            }
+
+            .avatar-actions p {
+                font-size: 13px;
+                color: #717171;
+                line-height: 1.5;
+                margin-bottom: 4px;
+            }
+
+            .avatar-btns {
+                display: flex;
+                gap: 10px;
+            }
+
+            .upload-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 10px 20px;
+                font-size: 14px;
+                font-weight: 600;
+                color: #fff;
+                background: linear-gradient(135deg, #FF385C, #E61E4D);
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                font-family: 'Inter', sans-serif;
+                transition: all 0.2s ease;
+                box-shadow: 0 2px 8px rgba(255, 56, 92, 0.3);
+            }
+
+            .upload-btn:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 14px rgba(255, 56, 92, 0.4);
+            }
+
+            .upload-btn:active {
+                transform: translateY(0);
+            }
+
+            .upload-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .remove-photo-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 10px 20px;
+                font-size: 14px;
+                font-weight: 600;
+                color: #717171;
+                background: #F7F7F7;
+                border: 1px solid #EBEBEB;
+                border-radius: 10px;
+                cursor: pointer;
+                font-family: 'Inter', sans-serif;
+                transition: all 0.2s ease;
+            }
+
+            .remove-photo-btn:hover {
+                background: #EFEFEF;
+                color: #222;
+            }
+
+            #avatarInput {
+                display: none;
+            }
+
+            /* ===== FORM FIELDS ===== */
+            .form-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+
+            .form-group {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .form-group.full-width {
+                grid-column: 1 / -1;
+            }
+
+            .form-label {
+                font-size: 13px;
+                font-weight: 600;
+                color: #484848;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .form-input {
+                padding: 14px 16px;
+                font-size: 16px;
+                font-weight: 500;
+                color: #222;
+                background: #FAFAFA;
+                border: 1.5px solid #EBEBEB;
+                border-radius: 12px;
+                font-family: 'Inter', sans-serif;
+                transition: all 0.2s ease;
+                outline: none;
+            }
+
+            .form-input:hover {
+                border-color: #B0B0B0;
+            }
+
+            .form-input:focus {
+                border-color: #222;
+                background: #fff;
+                box-shadow: 0 0 0 3px rgba(34, 34, 34, 0.06);
+            }
+
+            .form-input::placeholder {
+                color: #B0B0B0;
+                font-weight: 400;
+            }
+
+            .form-input.error {
+                border-color: #FF385C;
+                background: #FFF5F5;
+            }
+
+            .form-input.error:focus {
+                box-shadow: 0 0 0 3px rgba(255, 56, 92, 0.1);
+            }
+
+            .form-hint {
+                font-size: 12px;
+                color: #717171;
+                margin-top: 2px;
+            }
+
+            .form-error {
+                font-size: 12px;
+                color: #FF385C;
+                font-weight: 500;
+                margin-top: 2px;
+                display: none;
+            }
+
+            .form-error.show {
+                display: block;
+            }
+
+            /* Email field (read-only style) */
+            .form-input.readonly {
+                background: #F0F0F0;
+                color: #717171;
+                cursor: not-allowed;
+                border-color: #E0E0E0;
+            }
+
+            /* ===== PASSWORD SECTION ===== */
+            .password-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 16px 0;
+                cursor: pointer;
+                user-select: none;
+            }
+
+            .password-toggle-text {
+                font-size: 15px;
+                font-weight: 600;
+                color: #222;
+            }
+
+            .password-toggle-text span {
+                display: block;
+                font-size: 13px;
+                font-weight: 400;
+                color: #717171;
+                margin-top: 2px;
+            }
+
+            .password-toggle svg {
+                width: 20px;
+                height: 20px;
+                color: #717171;
+                transition: transform 0.3s ease;
+            }
+
+            .password-toggle.open svg {
+                transform: rotate(180deg);
+            }
+
+            .password-fields {
+                display: none;
+                padding-top: 16px;
+                border-top: 1px solid #F0F0F0;
+            }
+
+            .password-fields.show {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .password-field-wrapper {
+                position: relative;
+            }
+
+            .password-eye {
+                position: absolute;
+                right: 14px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: #717171;
+                padding: 4px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: color 0.2s;
+            }
+
+            .password-eye:hover {
+                color: #222;
+            }
+
+            .password-eye svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            /* Password strength */
+            .password-strength {
+                display: flex;
+                gap: 4px;
+                margin-top: 8px;
+            }
+
+            .strength-bar {
+                height: 3px;
+                flex: 1;
+                border-radius: 2px;
+                background: #EBEBEB;
+                transition: background 0.3s;
+            }
+
+            .strength-bar.weak { background: #FF385C; }
+            .strength-bar.medium { background: #FFB400; }
+            .strength-bar.strong { background: #00A699; }
+
+            .strength-text {
+                font-size: 12px;
+                font-weight: 500;
+                margin-top: 4px;
+                color: #717171;
+            }
+
+            /* ===== ACTION BUTTONS ===== */
+            .form-actions {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-top: 8px;
+            }
+
+            .cancel-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 14px 28px;
+                font-size: 15px;
+                font-weight: 600;
+                color: #222;
+                background: #fff;
+                border: 1.5px solid #DDDDDD;
+                border-radius: 12px;
+                cursor: pointer;
+                font-family: 'Inter', sans-serif;
+                transition: all 0.2s ease;
+                text-decoration: none;
+            }
+
+            .cancel-btn:hover {
+                background: #F7F7F7;
+                border-color: #B0B0B0;
+            }
+
+            .save-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 14px 36px;
+                font-size: 15px;
+                font-weight: 600;
+                color: #fff;
+                background: linear-gradient(135deg, #FF385C 0%, #E61E4D 50%, #D70466 100%);
+                border: none;
+                border-radius: 12px;
+                cursor: pointer;
+                font-family: 'Inter', sans-serif;
+                transition: all 0.25s ease;
+                box-shadow: 0 4px 14px rgba(255, 56, 92, 0.35);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .save-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(255, 56, 92, 0.45);
+            }
+
+            .save-btn:active {
+                transform: translateY(0);
+            }
+
+            .save-btn:disabled {
+                opacity: 0.7;
+                cursor: not-allowed;
+                transform: none;
+                box-shadow: none;
+            }
+
+            .save-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .save-btn .spinner {
+                display: none;
+                width: 18px;
+                height: 18px;
+                border: 2px solid rgba(255,255,255,0.3);
+                border-top-color: #fff;
+                border-radius: 50%;
+                animation: spin 0.6s linear infinite;
+            }
+
+            .save-btn.loading .spinner {
+                display: block;
+            }
+
+            .save-btn.loading .btn-text,
+            .save-btn.loading svg {
+                display: none;
+            }
+
+            /* ===== SUCCESS TOAST ===== */
+            .save-toast {
+                position: fixed;
+                bottom: 100px;
+                left: 50%;
+                transform: translateX(-50%) translateY(20px);
+                background: #222;
+                color: #fff;
+                padding: 14px 28px;
+                border-radius: 12px;
+                font-size: 14px;
+                font-weight: 600;
+                font-family: 'Inter', sans-serif;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+                opacity: 0;
+                pointer-events: none;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 1000;
+            }
+
+            .save-toast.show {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+                pointer-events: auto;
+            }
+
+            .save-toast svg {
+                width: 18px;
+                height: 18px;
+                color: #00A699;
+                animation: checkPop 0.4s ease-out;
+            }
+
+            /* ===== RESPONSIVE ===== */
+            @media (max-width: 640px) {
+                .edit-page {
+                    padding: 24px 16px 120px;
+                }
+
+                .page-header h1 {
+                    font-size: 26px;
+                }
+
+                .form-section {
+                    padding: 24px 20px;
+                    border-radius: 16px;
+                }
+
+                .form-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .avatar-upload-area {
+                    flex-direction: column;
+                    text-align: center;
+                }
+
+                .avatar-actions {
+                    align-items: center;
+                }
+
+                .avatar-btns {
+                    flex-direction: column;
+                    width: 100%;
+                }
+
+                .upload-btn,
+                .remove-photo-btn {
+                    justify-content: center;
+                    width: 100%;
+                }
+
+                .form-actions {
+                    flex-direction: column-reverse;
+                    gap: 12px;
+                }
+
+                .cancel-btn,
+                .save-btn {
+                    width: 100%;
+                    justify-content: center;
+                }
+
+                .section-header {
+                    flex-direction: column;
+                    text-align: center;
+                    gap: 10px;
+                }
+            }
+        </style>
+</head>
+
+<body>
+
+    <%- include("../partials/nav-bar") %>
+
+    <main class="edit-page">
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumb anim-fade-up">
+            <a href="/profile/<%= user._id %>">Profile</a>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+            </svg>
+            <span>Edit profile</span>
+        </div>
+
+        <!-- Page Header -->
+        <div class="page-header anim-fade-up" style="animation-delay: 0.05s">
+            <h1>Edit profile</h1>
+            <p>Update your personal information and profile photo to keep your account up to date.</p>
+        </div>
+
+        <!-- Edit Form -->
+        <form class="edit-form" id="editForm" action="/profile/<%= user._id %>/edit" method="POST" enctype="multipart/form-data">
+
+            <!-- ====== PROFILE PHOTO SECTION ====== -->
+            <div class="form-section anim-fade-up" style="animation-delay: 0.1s">
+                <div class="section-header">
+                    <div class="section-icon photo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#FF385C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                            <circle cx="12" cy="13" r="4"/>
+                        </svg>
+                    </div>
+                    <div class="section-header-text">
+                        <h2>Profile photo</h2>
+                        <p>A good photo helps people recognise you</p>
+                    </div>
+                </div>
+
+                <div class="avatar-upload-area">
+                    <div class="avatar-preview-wrapper">
+                        <img src="<%= user.profilePic %>" alt="<%= user.firstName %>" class="avatar-preview" id="avatarPreview"
+                            onerror="this.src='https://res.cloudinary.com/dcrsi07me/image/upload/v1772456092/avatar_ft4hwd.png'">
+                        <label for="avatarInput" class="avatar-overlay">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                                <circle cx="12" cy="13" r="4"/>
+                            </svg>
+                        </label>
+                    </div>
+
+                    <div class="avatar-actions">
+                        <div>
+                            <h3>Change photo</h3>
+                            <p>JPG, JPEG, or PNG. Max 5MB. A square image works best.</p>
+                        </div>
+                        <div class="avatar-btns">
+                            <label for="avatarInput" class="upload-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="17 8 12 3 7 8"/>
+                                    <line x1="12" y1="3" x2="12" y2="15"/>
+                                </svg>
+                                Upload photo
+                            </label>
+                            <button type="button" class="remove-photo-btn" id="removePhotoBtn">
+                                Remove
+                            </button>
+                        </div>
+                        <input type="file" id="avatarInput" name="profilePic" accept="image/jpeg,image/jpg,image/png">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== PERSONAL INFO SECTION ====== -->
+            <div class="form-section anim-fade-up" style="animation-delay: 0.2s">
+                <div class="section-header">
+                    <div class="section-icon personal">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#3949AB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    </div>
+                    <div class="section-header-text">
+                        <h2>Personal information</h2>
+                        <p>Update your name and account details</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="firstName">First name</label>
+                        <input type="text" class="form-input" id="firstName" name="firstName" 
+                            value="<%= user.firstName %>" placeholder="Enter first name" required>
+                        <span class="form-error" id="firstNameError">First name is required</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="lastName">Last name</label>
+                        <input type="text" class="form-input" id="lastName" name="lastName" 
+                            value="<%= user.lastName || '' %>" placeholder="Enter last name">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label" for="email">Email address</label>
+                        <input type="email" class="form-input readonly" id="email" 
+                            value="<%= user.email %>" readonly disabled>
+                        <span class="form-hint">Contact support to change your email address</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== PASSWORD SECTION ====== -->
+            <div class="form-section anim-fade-up" style="animation-delay: 0.3s">
+                <div class="section-header" style="margin-bottom: 0; padding-bottom: 0; border: none;">
+                    <div class="section-icon security">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#2E7D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </div>
+                    <div class="section-header-text">
+                        <h2>Password</h2>
+                        <p>Keep your account secure</p>
+                    </div>
+                </div>
+
+                <div class="password-toggle" id="passwordToggle">
+                    <div class="password-toggle-text">
+                        Change password
+                        <span>Update your password to keep your account secure</span>
+                    </div>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </div>
+
+                <div class="password-fields" id="passwordFields">
+                    <div class="form-group">
+                        <label class="form-label" for="currentPassword">Current password</label>
+                        <div class="password-field-wrapper">
+                            <input type="password" class="form-input" id="currentPassword" name="currentPassword" 
+                                placeholder="Enter current password" autocomplete="current-password">
+                            <button type="button" class="password-eye" data-target="currentPassword">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <span class="form-error" id="currentPasswordError">Current password is required</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="newPassword">New password</label>
+                        <div class="password-field-wrapper">
+                            <input type="password" class="form-input" id="newPassword" name="newPassword" 
+                                placeholder="Enter new password" autocomplete="new-password">
+                            <button type="button" class="password-eye" data-target="newPassword">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="password-strength" id="passwordStrength">
+                            <div class="strength-bar" id="bar1"></div>
+                            <div class="strength-bar" id="bar2"></div>
+                            <div class="strength-bar" id="bar3"></div>
+                            <div class="strength-bar" id="bar4"></div>
+                        </div>
+                        <span class="strength-text" id="strengthText"></span>
+                        <span class="form-error" id="newPasswordError">Password must be at least 6 characters</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="confirmPassword">Confirm new password</label>
+                        <div class="password-field-wrapper">
+                            <input type="password" class="form-input" id="confirmPassword" name="confirmPassword" 
+                                placeholder="Re-enter new password" autocomplete="new-password">
+                            <button type="button" class="password-eye" data-target="confirmPassword">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <span class="form-error" id="confirmPasswordError">Passwords do not match</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== ACTION BUTTONS ====== -->
+            <div class="form-actions anim-fade-up" style="animation-delay: 0.4s">
+                <a href="/profile/<%= user._id %>" class="cancel-btn">Cancel</a>
+                <button type="submit" class="save-btn" id="saveBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    <span class="btn-text">Save changes</span>
+                    <div class="spinner"></div>
+                </button>
+            </div>
+
+        </form>
+    </main>
+
+    <!-- Success Toast -->
+    <div class="save-toast" id="saveToast">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <span id="toastMessage">Profile updated successfully!</span>
+    </div>
+
+    <!-- Footer -->
+    <%- include("../partials/footer") %>
+    <%- include("../partials/nav-script") %>
+
+    <script>
+        // === Avatar Preview ===
+        const avatarInput = document.getElementById('avatarInput');
+        const avatarPreview = document.getElementById('avatarPreview');
+        const removePhotoBtn = document.getElementById('removePhotoBtn');
+        const defaultAvatar = 'https://res.cloudinary.com/dcrsi07me/image/upload/v1772456092/avatar_ft4hwd.png';
+
+        avatarInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast('Image must be under 5MB', true);
+                    this.value = '';
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    avatarPreview.src = evt.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        removePhotoBtn.addEventListener('click', function() {
+            avatarPreview.src = defaultAvatar;
+            avatarInput.value = '';
+            // Add hidden field to signal removal
+            let removeField = document.getElementById('removeProfilePic');
+            if (!removeField) {
+                removeField = document.createElement('input');
+                removeField.type = 'hidden';
+                removeField.name = 'removeProfilePic';
+                removeField.id = 'removeProfilePic';
+                removeField.value = 'true';
+                document.getElementById('editForm').appendChild(removeField);
+            }
+        });
+
+        // === Password Toggle ===
+        const passwordToggle = document.getElementById('passwordToggle');
+        const passwordFields = document.getElementById('passwordFields');
+
+        passwordToggle.addEventListener('click', function() {
+            this.classList.toggle('open');
+            passwordFields.classList.toggle('show');
+        });
+
+        // === Password Eye Toggle ===
+        document.querySelectorAll('.password-eye').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                
+                this.innerHTML = isPassword 
+                    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+                    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+            });
+        });
+
+        // === Password Strength Indicator ===
+        const newPasswordInput = document.getElementById('newPassword');
+        const bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3'), document.getElementById('bar4')];
+        const strengthText = document.getElementById('strengthText');
+
+        newPasswordInput.addEventListener('input', function() {
+            const val = this.value;
+            let score = 0;
+
+            if (val.length >= 6) score++;
+            if (val.length >= 10) score++;
+            if (/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
+            if (/[0-9]/.test(val) && /[^A-Za-z0-9]/.test(val)) score++;
+
+            const labels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+            const classes = ['', 'weak', 'medium', 'medium', 'strong'];
+
+            bars.forEach((bar, i) => {
+                bar.className = 'strength-bar';
+                if (i < score) bar.classList.add(classes[score]);
+            });
+
+            strengthText.textContent = val.length > 0 ? labels[score] || 'Too short' : '';
+            strengthText.style.color = score <= 1 ? '#FF385C' : score <= 2 ? '#FFB400' : '#00A699';
+        });
+
+        // === Form Validation & Submit ===
+        const editForm = document.getElementById('editForm');
+        const saveBtn = document.getElementById('saveBtn');
+
+        editForm.addEventListener('submit', function(e) {
+            let valid = true;
+
+            // First name validation
+            const firstName = document.getElementById('firstName');
+            const firstNameError = document.getElementById('firstNameError');
+            if (!firstName.value.trim()) {
+                firstName.classList.add('error');
+                firstNameError.classList.add('show');
+                valid = false;
+            } else {
+                firstName.classList.remove('error');
+                firstNameError.classList.remove('show');
+            }
+
+            // Password validation (only if fields are visible & filled)
+            if (passwordFields.classList.contains('show')) {
+                const currentPw = document.getElementById('currentPassword');
+                const newPw = document.getElementById('newPassword');
+                const confirmPw = document.getElementById('confirmPassword');
+
+                if (newPw.value || confirmPw.value || currentPw.value) {
+                    if (!currentPw.value) {
+                        currentPw.classList.add('error');
+                        document.getElementById('currentPasswordError').classList.add('show');
+                        valid = false;
+                    } else {
+                        currentPw.classList.remove('error');
+                        document.getElementById('currentPasswordError').classList.remove('show');
+                    }
+
+                    if (newPw.value.length < 6) {
+                        newPw.classList.add('error');
+                        document.getElementById('newPasswordError').classList.add('show');
+                        valid = false;
+                    } else {
+                        newPw.classList.remove('error');
+                        document.getElementById('newPasswordError').classList.remove('show');
+                    }
+
+                    if (newPw.value !== confirmPw.value) {
+                        confirmPw.classList.add('error');
+                        document.getElementById('confirmPasswordError').classList.add('show');
+                        valid = false;
+                    } else {
+                        confirmPw.classList.remove('error');
+                        document.getElementById('confirmPasswordError').classList.remove('show');
+                    }
+                }
+            }
+
+            if (!valid) {
+                e.preventDefault();
+                return;
+            }
+
+            // Show loading state
+            saveBtn.classList.add('loading');
+            saveBtn.disabled = true;
+        });
+
+        // Clear error on input
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('error');
+                const errorEl = this.parentElement.querySelector('.form-error') || this.nextElementSibling;
+                if (errorEl && errorEl.classList.contains('form-error')) {
+                    errorEl.classList.remove('show');
+                }
+            });
+        });
+
+        // === Toast ===
+        function showToast(message, isError) {
+            const toast = document.getElementById('saveToast');
+            const toastMsg = document.getElementById('toastMessage');
+            toastMsg.textContent = message;
+            toast.style.background = isError ? '#FF385C' : '#222';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        <% if (typeof successMsg !== 'undefined' && successMsg) { %>
+            showToast('<%= successMsg %>');
+        <% } %>
+
+        <% if (typeof errorMsg !== 'undefined' && errorMsg) { %>
+            showToast('<%= errorMsg %>', true);
+        <% } %>
+
+        // Intersection Observer for scroll-triggered animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.anim-fade-up, .anim-scale-in').forEach(el => observer.observe(el));
+    </script>
+
+</body>
+
+</html>

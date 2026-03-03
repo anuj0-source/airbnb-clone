@@ -1,5 +1,7 @@
 const Home = require("../models/home.model");
 const User = require("../models/user.model");
+const bcrypt = require("bcrypt");
+const cloudinary = require("../utils/cloudinaryConfig");
 
 // Home Page
 exports.getHome = async (req, res) => {
@@ -167,4 +169,143 @@ exports.postChangeUserType = async (req, res) => {
   catch (err) {
     return err;
   }
-}
+};
+
+exports.getProfile = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.findById(userId).lean();
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    // Populate listings
+    let listings = [];
+    if (user.listings && user.listings.length > 0) {
+      listings = await Home.find({ _id: { $in: user.listings } }).lean();
+    }
+
+    // Get favourites count
+    const favouritesCount = user.favourites ? user.favourites.length : 0;
+
+    // Calculate member since date from MongoDB ObjectId
+    const memberSince = new Date(parseInt(user._id.toString().substring(0, 8), 16) * 1000);
+
+    res.render("./store/profile", {
+      user,
+      listings,
+      favouritesCount,
+      memberSince
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Something went wrong");
+  }
+};
+
+// Edit Profile Page
+exports.getEditProfile = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    // Only allow editing own profile
+    if (req.session.userId !== userId) {
+      return res.redirect("/profile/" + userId);
+    }
+
+    const user = await User.findById(userId).lean();
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    res.render("./store/edit-profile", {
+      user,
+      successMsg: null,
+      errorMsg: null
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Something went wrong");
+  }
+};
+
+// Post Edit Profile
+exports.postEditProfile = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    // Only allow editing own profile
+    if (req.session.userId !== userId) {
+      return res.redirect("/profile/" + userId);
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    const { firstName, lastName, currentPassword, newPassword, confirmPassword, removeProfilePic } = req.body;
+
+    // Update basic info
+    user.firstName = firstName.trim();
+    user.lastName = (lastName || '').trim();
+
+    // Handle profile picture
+    if (req.file) {
+      user.profilePic = req.file.path;
+      req.session.profilePic = req.file.path;
+    } else if (removeProfilePic === 'true') {
+      user.profilePic = 'https://res.cloudinary.com/dcrsi07me/image/upload/v1772456092/avatar_ft4hwd.png';
+      req.session.profilePic = user.profilePic;
+    }
+
+    // Handle password change
+    if (currentPassword && newPassword) {
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        const userLean = await User.findById(userId).lean();
+        return res.render("./store/edit-profile", {
+          user: userLean,
+          successMsg: null,
+          errorMsg: "Current password is incorrect"
+        });
+      }
+
+      if (newPassword !== confirmPassword) {
+        const userLean = await User.findById(userId).lean();
+        return res.render("./store/edit-profile", {
+          user: userLean,
+          successMsg: null,
+          errorMsg: "New passwords do not match"
+        });
+      }
+
+      if (newPassword.length < 6) {
+        const userLean = await User.findById(userId).lean();
+        return res.render("./store/edit-profile", {
+          user: userLean,
+          successMsg: null,
+          errorMsg: "Password must be at least 6 characters"
+        });
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 12);
+      user.password = hashedPassword;
+    }
+
+    await user.save();
+
+    // Update session data
+    req.session.toast = { msg: 'Profile updated successfully ✅', type: 'success' };
+
+    req.session.save(() => {
+      res.redirect("/profile/" + userId);
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Something went wrong");
+  }
+};

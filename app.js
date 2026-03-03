@@ -1,4 +1,5 @@
 const express = require("express");
+const env=require("dotenv").config();
 const path = require("path");
 const rootpath = require("./utils/pathUtil");
 const { MONGO_URL } = require("./utils/database");
@@ -8,7 +9,7 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const mongodbStore = require("connect-mongodb-session")(session);
 
-const PORT = 3000;
+const PORT = process.env.PORT;
 
 const { userRouter } = require("./routes/user.route");
 const { hostRouter } = require("./routes/host.route");
@@ -53,12 +54,13 @@ app.use((req, res, next) => {
     res.locals.isLoggedIn = req.session.isLoggedIn || false;
     res.locals.userId = null;
     res.locals.userType = null;
+    res.locals.profilePic = null;
 
     if (req.session.isLoggedIn) {
         res.locals.userId = req.session.userId;
         res.locals.userType = req.session.userType;
+        res.locals.profilePic = req.session.profilePic || null;
     }
-
 
     // Flash toast message (read once, then clear)
     if (req.session.toast) {

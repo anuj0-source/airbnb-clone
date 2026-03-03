@@ -28,6 +28,7 @@ exports.postLogin = async (req, res) => {
         req.session.isLoggedIn = true;
         req.session.userId = String(logUser._id);
         req.session.userType = logUser.userType;
+        req.session.profilePic = logUser.profilePic || null;
         req.session.toast = { msg: 'Logged in successfully ✅', type: 'success' };
 
         req.session.save(() => {
@@ -35,7 +36,7 @@ exports.postLogin = async (req, res) => {
 
             else return res.redirect('/');
         })
-        
+
     }
     catch (err) {
         console.log("Error wile logging", err);

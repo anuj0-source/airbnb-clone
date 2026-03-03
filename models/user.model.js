@@ -30,6 +30,11 @@ const userSchema=new mongoose.Schema({
     listings:{
         type:[mongoose.Schema.Types.ObjectId],
         ref:"Home"
+    },
+    profilePic:{
+        type:String,
+        required:false,
+        default:"https://res.cloudinary.com/dcrsi07me/image/upload/v1772456092/avatar_ft4hwd.png"
     }
 });
 

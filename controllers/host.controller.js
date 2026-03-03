@@ -8,7 +8,7 @@ exports.addHomeGet = (req, res) => {
 
 exports.addHomePost = async (req, res) => {
   const userId = req.params.userId;
-  const homeImages = req.files.map(file => '/' + file.path.replace(/\\/g, '/').replace('public/', ''));
+  const homeImages = req.files.map(file => file.path);
 
   const { "house-name": houseName, size, location, price, "description": homeDescription } = req.body;
   const home = new Home({ houseName, size, location, price, homeImages, homeDescription });
