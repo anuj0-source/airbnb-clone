@@ -192,8 +192,10 @@
                                             </div>
                                             <div
                                                 class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
-                                                <img src="<%= home.hostId.profilePic %>" alt="host profilePic"
-                                                    class="w-full h-full object-cover rounded-full">
+                                                <a href="/profile/<%= home.hostId._id %>">
+                                                    <img src="<%= home.hostId.profilePic %>" alt="host profilePic"
+                                                        class="w-full h-full object-cover rounded-full">
+                                                </a>
                                             </div>
                                         </div>
 
@@ -394,96 +396,10 @@
 
                                         </div>
                                     </div>
-
-                                </div>
-
-                                <!-- Reviews Section -->
-                                <div class="fade-up fd5 mt-8 pt-8 border-t border-gray-200">
-                                    <div class="flex items-center gap-2 mb-6">
-                                        <span class="text-[22px] font-semibold text-gray-900">⭐ 4.92</span>
-                                        <span class="text-[22px] font-semibold text-gray-900">·</span>
-                                        <span class="text-[22px] font-semibold text-gray-900">128 reviews</span>
+                                    <div class="">
+                                        <a href="/message/<%= home.hostId._id %>">Message Host</a>
                                     </div>
 
-                                    <!-- Rating Bars -->
-                                    <div class="grid grid-cols-2 gap-x-16 gap-y-3 mb-10 max-w-2xl">
-                                        <div class="flex items-center gap-3">
-                                            <span class="text-sm text-gray-700 w-28">Cleanliness</span>
-                                            <div class="flex-1 h-1 bg-gray-200 rounded-full">
-                                                <div class="h-1 bg-gray-900 rounded-full" style="width:96%"></div>
-                                            </div>
-                                            <span class="text-xs font-semibold text-gray-700">4.9</span>
-                                        </div>
-                                        <div class="flex items-center gap-3">
-                                            <span class="text-sm text-gray-700 w-28">Accuracy</span>
-                                            <div class="flex-1 h-1 bg-gray-200 rounded-full">
-                                                <div class="h-1 bg-gray-900 rounded-full" style="width:98%"></div>
-                                            </div>
-                                            <span class="text-xs font-semibold text-gray-700">5.0</span>
-                                        </div>
-                                        <div class="flex items-center gap-3">
-                                            <span class="text-sm text-gray-700 w-28">Communication</span>
-                                            <div class="flex-1 h-1 bg-gray-200 rounded-full">
-                                                <div class="h-1 bg-gray-900 rounded-full" style="width:96%"></div>
-                                            </div>
-                                            <span class="text-xs font-semibold text-gray-700">4.9</span>
-                                        </div>
-                                        <div class="flex items-center gap-3">
-                                            <span class="text-sm text-gray-700 w-28">Location</span>
-                                            <div class="flex-1 h-1 bg-gray-200 rounded-full">
-                                                <div class="h-1 bg-gray-900 rounded-full" style="width:100%"></div>
-                                            </div>
-                                            <span class="text-xs font-semibold text-gray-700">5.0</span>
-                                        </div>
-                                        <div class="flex items-center gap-3">
-                                            <span class="text-sm text-gray-700 w-28">Check-in</span>
-                                            <div class="flex-1 h-1 bg-gray-200 rounded-full">
-                                                <div class="h-1 bg-gray-900 rounded-full" style="width:100%"></div>
-                                            </div>
-                                            <span class="text-xs font-semibold text-gray-700">5.0</span>
-                                        </div>
-                                        <div class="flex items-center gap-3">
-                                            <span class="text-sm text-gray-700 w-28">Value</span>
-                                            <div class="flex-1 h-1 bg-gray-200 rounded-full">
-                                                <div class="h-1 bg-gray-900 rounded-full" style="width:92%"></div>
-                                            </div>
-                                            <span class="text-xs font-semibold text-gray-700">4.8</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Review Cards -->
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8">
-                                        <div>
-                                            <div class="flex items-center gap-3 mb-3">
-                                                <div
-                                                    class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-white font-bold text-sm">
-                                                    R</div>
-                                                <div>
-                                                    <p class="font-semibold text-gray-900 text-sm">Rahul</p>
-                                                    <p class="text-gray-500 text-xs">February 2026</p>
-                                                </div>
-                                            </div>
-                                            <p class="text-gray-700 text-sm leading-relaxed">
-                                                Amazing place! The views were breathtaking and the host was incredibly
-                                                welcoming. Would definitely come back again.
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <div class="flex items-center gap-3 mb-3">
-                                                <div
-                                                    class="w-10 h-10 rounded-full bg-[#FF5A5F] flex items-center justify-center text-white font-bold text-sm">
-                                                    P</div>
-                                                <div>
-                                                    <p class="font-semibold text-gray-900 text-sm">Priya</p>
-                                                    <p class="text-gray-500 text-xs">January 2026</p>
-                                                </div>
-                                            </div>
-                                            <p class="text-gray-700 text-sm leading-relaxed">
-                                                Very clean and cozy. Loved the location — close to everything. The
-                                                kitchen was well-equipped and the bed was super comfortable.
-                                            </p>
-                                        </div>
-                                    </div>
                                 </div>
 
             </div>

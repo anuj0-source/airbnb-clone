@@ -1047,7 +1047,7 @@
                                 </div>
                                 <% } %>
                     </div>
-        </div>
+                </div>
 
         </main>
 
@@ -1056,27 +1056,29 @@
 
             <%- include("../partials/nav-script") %>
 
-                <script>
-                    // Intersection Observer for scroll-triggered animations
-                    const observerOptions = {
-                        threshold: 0.1,
-                        rootMargin: '0px 0px -40px 0px'
-                    };
 
-                    const observer = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                entry.target.style.animationPlayState = 'running';
-                                observer.unobserve(entry.target);
-                            }
-                        });
-                    }, observerOptions);
 
-                    // Pause animations until visible
-                    document.querySelectorAll('.anim-fade-up, .anim-scale-in').forEach(el => {
-                        observer.observe(el);
-                    });
-                </script>
+                        <script>
+                            // ===== Intersection Observer for scroll-triggered animations =====
+                            const observerOptions = {
+                                threshold: 0.1,
+                                rootMargin: '0px 0px -40px 0px'
+                            };
+
+                            const observer = new IntersectionObserver((entries) => {
+                                entries.forEach(entry => {
+                                    if (entry.isIntersecting) {
+                                        entry.target.style.animationPlayState = 'running';
+                                        observer.unobserve(entry.target);
+                                    }
+                                });
+                            }, observerOptions);
+
+                            // Pause animations until visible
+                            document.querySelectorAll('.anim-fade-up, .anim-scale-in').forEach(el => {
+                                observer.observe(el);
+                            });
+                        </script>
 
 </body>
 

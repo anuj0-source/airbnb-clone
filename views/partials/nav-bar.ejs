@@ -601,6 +601,14 @@
             <span class="tab-text">Listings</span>
           </a>
         </li>
+        <li>
+          <a href="/host/messages" class="nav-tab-link <%= url === '/host/messages' ? 'active' : '' %>">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            <span class="tab-text">Messages</span>
+          </a>
+        </li>
         <% } else { %>
           <li>
             <a href="/" class="nav-tab-link <%= url === '/' ? 'active' : '' %>">
@@ -673,40 +681,42 @@
                       <img src="<%= profilePic %>" alt="Profile Pic">
                     </a>
                     <% } else { %>
-                    
-                    <a href="/login" class="nav-avatar" title="My Profile">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                        <circle cx="12" cy="7" r="4"/>
-                      </svg>
-                    </a>
-                    <% } %>
 
-                      <button class="menu-btn" id="profileBtn" aria-label="User menu">
-                        <div class="bar-group">
-                          <span></span><span></span><span></span>
-                        </div>
-                      </button>
+                      <a href="/login" class="nav-avatar" title="My Profile">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                          stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                          <circle cx="12" cy="7" r="4" />
+                        </svg>
+                      </a>
+                      <% } %>
 
-                      <div class="profile-dropdown" id="profileDropdown">
-                        <% if (isLoggedIn) { %>
-                          <a href="/profile/<%= userId %>" class="dropdown-item bold">Profile</a>
-                          <div class="dropdown-divider"></div>
-                          <% if(userType=='host' ) {%>
-                            <a href="/host/add-home" class="dropdown-item">Add property</a>
-                            <a href="/host/listings" class="dropdown-item">Manage listings</a>
-                            <% } %>
-                              <div class="dropdown-divider"></div>
-                              <form method="POST" action="/logout" style="margin:0;">
-                                <button type="submit" class="dropdown-item">Log out</button>
-                              </form>
-                              <% } else { %>
-                                <a href="/login" class="dropdown-item bold">Log in</a>
-                                <a href="/signup" class="dropdown-item">Sign up</a>
+                        <button class="menu-btn" id="profileBtn" aria-label="User menu">
+                          <div class="bar-group">
+                            <span></span><span></span><span></span>
+                          </div>
+                        </button>
+
+                        <div class="profile-dropdown" id="profileDropdown">
+                          <% if (isLoggedIn) { %>
+                            <a href="/profile/<%= userId %>" class="dropdown-item bold">Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <% if(userType=='host' ) {%>
+                              <a href="/host/add-home" class="dropdown-item">Add property</a>
+                              <a href="/host/listings" class="dropdown-item">Manage listings</a>
+                              <a href="/host/messages" class="dropdown-item">Messages</a>
+                              <% } %>
                                 <div class="dropdown-divider"></div>
-                                <a href="/host/add-home" class="dropdown-item">Airbnb your home</a>
-                                <% } %>
-                      </div>
+                                <form method="POST" action="/logout" style="margin:0;">
+                                  <button type="submit" class="dropdown-item">Log out</button>
+                                </form>
+                                <% } else { %>
+                                  <a href="/login" class="dropdown-item bold">Log in</a>
+                                  <a href="/signup" class="dropdown-item">Sign up</a>
+                                  <div class="dropdown-divider"></div>
+                                  <a href="/host/add-home" class="dropdown-item">Airbnb your home</a>
+                                  <% } %>
+                        </div>
                 </div>
     </div>
 
@@ -725,6 +735,13 @@
           <polyline points="9 22 9 12 15 12 15 22" />
         </svg>
         <span class="tab-label">Listings</span>
+      </a>
+      <a href="/host/messages" class="bottom-tab <%= url === '/host/messages' ? 'active' : '' %>">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+        <span class="tab-label">Messages</span>
       </a>
       <% } else { %>
         <a href="/" class="bottom-tab <%= url === '/' ? 'active' : '' %>">
@@ -798,6 +815,13 @@
           <polyline points="9 22 9 12 15 12 15 22" />
         </svg>
         Add property
+      </a>
+      <a href="/host/messages" class="menu-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+        Messages
       </a>
       <% } else { %>
         <form action="/change-user/<%= userId %>" method="POST" style="margin:0;">
