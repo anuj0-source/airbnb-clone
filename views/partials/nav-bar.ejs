@@ -648,7 +648,7 @@
     <div class="nav-right">
       <% if (isLoggedIn) { %>
         <% if(userType=='host' ) {%>
-          <form action="/change-user/<%= userId %>" method="POST">
+          <form action="/change-user" method="POST">
             <button class="nav-host-link">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10" />
@@ -659,7 +659,7 @@
             </button>
           </form>
           <% } else { %>
-            <form action="/change-user/<%= userId %>" method="POST">
+            <form action="/change-user" method="POST">
               <button type="submit" class="nav-host-link">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
                   stroke-linejoin="round">

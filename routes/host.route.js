@@ -1,6 +1,6 @@
 const express = require("express");
 const multer = require("multer");
-const {CloudinaryStorage} = require("multer-storage-cloudinary");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const path = require("path");
 const hostRouter = express.Router();
 const hostController = require("../controllers/host.controller");
@@ -16,11 +16,11 @@ const storage = new CloudinaryStorage({
     }
 });
 
-const uploadHomeImages = multer({storage});
+const uploadHomeImages = multer({ storage });
 
 hostRouter.get("/add-home", hostController.addHomeGet);
 
-hostRouter.post("/add-home/:userId", uploadHomeImages.array("images", 5), hostController.addHomePost);
+hostRouter.post("/add-home", uploadHomeImages.array("images", 5), hostController.addHomePost);
 
 hostRouter.get("/listings", hostController.getListing);
 
@@ -28,7 +28,7 @@ hostRouter.get("/edit-home/:id", hostController.getEditHome);
 
 hostRouter.post("/edit-home/:id", uploadHomeImages.array("images", 5), hostController.postEditHome);
 
-hostRouter.delete("/delete/:id", hostController.deleteHome);
+hostRouter.post("/delete/:id", hostController.deleteHome);
 
 
 module.exports = {

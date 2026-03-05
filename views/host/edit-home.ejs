@@ -34,7 +34,7 @@
         </div>
         <% } %>
 
-          <form method="POST" action="<%= edit? `/host/edit-home/${home._id}` : `/host/add-home/${userId}` %>"
+          <form method="POST" action="<%= edit? `/host/edit-home/${home._id}` : `/host/add-home` %>"
             class="space-y-6" enctype="multipart/form-data">
             <div>
               <label class="block text-gray-700 font-semibold mb-2">House Name</label>

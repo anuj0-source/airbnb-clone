@@ -32,7 +32,7 @@ userRouter.post("/wishlists", isAuth, userController.addToWishlist);
 
 userRouter.delete("/wishlists", isAuth, userController.removeFromWishlist);
 
-userRouter.post("/change-user/:userId", userController.postChangeUserType);
+userRouter.post("/change-user", isAuth,userController.postChangeUserType);
 
 userRouter.get("/profile/:userId", isAuth, userController.getProfile);
 

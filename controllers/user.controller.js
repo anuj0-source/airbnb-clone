@@ -138,7 +138,7 @@ exports.removeFromWishlist = async (req, res) => {
 
 exports.postChangeUserType = async (req, res) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.session.userId
 
     const userType = req.session.userType;
 

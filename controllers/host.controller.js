@@ -7,7 +7,7 @@ exports.addHomeGet = (req, res) => {
 };
 
 exports.addHomePost = async (req, res) => {
-  const userId = req.params.userId;
+  const userId = req.session.userId;
   const homeImages = req.files.map(file => file.path);
 
   const { "house-name": houseName, size, location, price, "description": homeDescription } = req.body;
@@ -46,6 +46,11 @@ exports.getEditHome = async (req, res) => {
     const editing = true;
 
     const home = await Home.findById(id);
+    const userId=req.session.userId;
+
+    if(home.hostId.toString() != userId){
+      return res.redirect("/host/listings?toast=You are not authorized to edit this listing 🚫");
+    }
 
     res.render("./host/edit-home", {
       home: home,
@@ -59,6 +64,16 @@ exports.getEditHome = async (req, res) => {
 
 exports.postEditHome = async (req, res) => {
   try {
+
+    const userId=req.session.userId;
+    const homeId=req.params.id;
+    const home=await Home.findById(homeId);
+    const hostId=home.hostId.toString();
+
+    if(hostId != userId){
+      return res.redirect("/host/listings?toast=You are not authorized to edit this listing 🚫");
+    }
+
     const { "house-name": houseName, size, location, price, "description": homeDescription } = req.body;
 
     const id = req.params.id;
@@ -86,6 +101,11 @@ exports.deleteHome = async (req, res) => {
 
     const homeId = req.params.id;
     const userId = req.session.userId;
+    const home=await Home.findById(homeId);
+
+    if(home.hostId.toString() != userId){
+      return res.redirect("/host/listings?toast=You are not authorized to delete this listing 🚫");
+    }
 
     const user = await User.findByIdAndUpdate(
       userId,
@@ -101,4 +121,4 @@ exports.deleteHome = async (req, res) => {
     console.log("Failed to delete home");
     res.redirect("/host/listings");
   }
-}
+};
