@@ -309,3 +309,28 @@ exports.postEditProfile = async (req, res) => {
     res.status(500).send("Something went wrong");
   }
 };
+
+exports.postBooking = async (req, res) => {
+  try {
+    const homeId = req.params.homeId;
+    const userId = req.session.userId;
+
+    // Basic validation
+    if (!userId) return res.redirect('/login');
+
+    const home = await Home.findById(homeId).lean();
+    if (!home) return res.status(404).send('Home not found');
+
+    // NOTE: bookings are not persisted in the current schema.
+    // Add a transient toast and redirect to bookings page.
+    req.session.toast = { msg: 'Booking placed (demo). Check bookings view.', type: 'success' };
+    return req.session.save(() => {
+      res.redirect('/bookings');
+    });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Error creating booking');
+  }
+};
+  

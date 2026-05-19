@@ -14,6 +14,7 @@ const PORT = process.env.PORT;
 const { userRouter } = require("./routes/user.route");
 const { hostRouter } = require("./routes/host.route");
 const authRouter = require("./routes/auth.route");
+const sitemapRouter = require("./routes/sitemap.route");
 const isAuth = require("./middlewares/isAuth");
 const changeToHost = require("./middlewares/toHosting");
 
@@ -81,6 +82,7 @@ app.use((req, res, next) => {
 app.use(authRouter);
 app.use("/host", isAuth, changeToHost, hostRouter);
 app.use("/", userRouter);
+app.use(sitemapRouter);
 
 app.use(errorController.pageNotFound);
 

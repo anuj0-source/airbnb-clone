@@ -40,4 +40,6 @@ userRouter.get("/profile/:userId/edit", isAuth, userController.getEditProfile);
 
 userRouter.post("/profile/:userId/edit", isAuth, uploadProfilePic.single("profilePic"), userController.postEditProfile);
 
+userRouter.post("/booking/:homeId", isAuth, userController.postBooking);
+
 module.exports = { userRouter };
