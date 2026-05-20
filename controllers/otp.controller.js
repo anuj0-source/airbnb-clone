@@ -91,7 +91,7 @@ exports.postSendOtp = async (req, res) => {
         return res.render("./store/login-otp", {
             step: "email",
             email: req.body.email || "",
-            errorMsg: "Something went wrong. Please try again.",
+            errorMsg: `Error: ${err.message || err}`,
             successMsg: null
         });
     }
@@ -157,7 +157,7 @@ exports.postVerifyOtp = async (req, res) => {
         return res.render("./store/login-otp", {
             step: "otp",
             email: req.body.email || "",
-            errorMsg: "Something went wrong. Please try again.",
+            errorMsg: `Error: ${err.message || err}`,
             successMsg: null
         });
     }
@@ -194,7 +194,7 @@ exports.postResendOtp = async (req, res) => {
         return res.render("./store/login-otp", {
             step: "otp",
             email: req.body.email || "",
-            errorMsg: "Failed to resend code. Please try again.",
+            errorMsg: `Error: ${err.message || err}`,
             successMsg: null
         });
     }
