@@ -1,6 +1,6 @@
 const { body, validationResult, check } = require("express-validator");
 const User = require("../models/user.model");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 exports.getLogin = (req, res) => {
     res.render("./store/login-page", { check: false, notexist: false, wrongPass: false });
